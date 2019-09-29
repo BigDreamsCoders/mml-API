@@ -41,10 +41,16 @@ data class User (
         var accountType: Int = 1,
 
         @Column(name = "u_token_verification")
-        var tokenVerify: String = "",
+        @Type(type = "pg-uuid")
+        var verifyToken: UUID ?= null,
 
         @Column(name = "u_token_reset")
-        var tokenReset: String = "",
+        @Type(type = "pg-uuid")
+        var resetToken: UUID ?= null,
+
+        @Column(name = "u_login_token")
+        @Type(type = "pg-uuid")
+        var loginToken : UUID ?= null,
 
         @Type(type = "int-array")
         @Column(name = "u_favorites", columnDefinition = "integer[]")
