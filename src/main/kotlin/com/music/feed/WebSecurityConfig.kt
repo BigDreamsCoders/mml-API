@@ -23,6 +23,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationEn
 class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
 
+    @Autowired
+    lateinit var userDetailsService : UserDetailsService
 
     @Bean
     fun bCryptPasswordEncoder(): BCryptPasswordEncoder {
@@ -35,9 +37,6 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .csrf().disable()
                 .exceptionHandling()
                 .and()
-                .httpBasic()
-                .authenticationEntryPoint(authenticationEntryPoint())
-                .and()
                 .authorizeRequests()
                 .antMatchers("v1/api/**/**").permitAll()
                 .antMatchers("v1/api/admin/**").hasRole("ADMIN")
@@ -49,12 +48,10 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         return authenticationManager()
     }
 
-
-    @Bean
-    fun authenticationEntryPoint(): AuthenticationEntryPoint {
-        val entryPoint = BasicAuthenticationEntryPoint()
-        entryPoint.realmName = "user realm"
-        return entryPoint
+    @Autowired
+    @Throws(Exception::class)
+    fun configureGlobal(auth: AuthenticationManagerBuilder) {
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder())
     }
 
 }

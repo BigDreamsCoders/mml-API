@@ -1,21 +1,16 @@
 package com.music.feed.controller
 
-import com.music.feed.domain.RequestResponse
+import com.music.feed.responses.RequestResponse
 import com.music.feed.domain.auth.User
+import com.music.feed.responses.TokenResponse
 import com.music.feed.form.UserForm
 import com.music.feed.service.auth.SecurityServiceImpl
-import com.music.feed.service.auth.UserServiceImpl
-import com.music.feed.service.auth.interfaces.SecurityService
 import com.music.feed.service.auth.interfaces.UserService
-import com.music.feed.validator.LoginValidator
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.validation.BindingResult
-import org.springframework.validation.Validator
 import org.springframework.web.bind.annotation.*
-import java.net.http.HttpResponse
 import java.util.*
 
 @RestController
@@ -27,26 +22,53 @@ class UserController{
     @Autowired
     lateinit var securityService: SecurityServiceImpl
 
-    @Autowired
-    lateinit var loginValidator : LoginValidator
 
     @PostMapping(value = ["/login"])
     @ResponseBody
     fun loginProcess(@RequestBody userForm :UserForm , bindingResult: BindingResult): ResponseEntity<Any>{
-
-        loginValidator.validate(userForm, bindingResult)
         if (bindingResult.hasErrors()) {
             return ResponseEntity(bindingResult.allErrors, HttpStatus.INTERNAL_SERVER_ERROR)
         }
 
         securityService.autoLogin(userForm.email, userForm.password)
-        return ResponseEntity(userForm, HttpStatus.OK)
+        return ResponseEntity(RequestResponse("Session started", 200), HttpStatus.OK)
+    }
+
+    @GetMapping(value =["/login/{token}"])
+    @ResponseBody
+    fun loginToken(@PathVariable("token") token:String): ResponseEntity<Any>{
+        val user = userService.findByLoginToken(token)
+        if(!user.isPresent){
+            return ResponseEntity("Non valid token", HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        securityService.autoLogin(user.get().email, user.get().password)
+        return ResponseEntity(RequestResponse("Session started", 200), HttpStatus.OK)
+    }
+
+    @PostMapping(value = ["/token"])
+    @ResponseBody
+    fun requestToken(@RequestBody userForm :UserForm , bindingResult: BindingResult): ResponseEntity<Any>{
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity(bindingResult.allErrors, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        val findUser = userService.findByEmail(userForm.email)
+        if(findUser.isPresent){
+            findUser.get().loginToken = UUID.randomUUID().toString()
+        }
+        else{
+            return ResponseEntity(RequestResponse("User not found", 500), HttpStatus.OK)
+        }
+
+        userService.save(findUser.get())
+        securityService.autoLogin(userForm.email, userForm.password)
+
+        return ResponseEntity(TokenResponse("Here is your token", 200,
+                findUser.get().loginToken.toString()), HttpStatus.CREATED)
     }
 
     @PostMapping(value = ["/registration"])
     @ResponseBody
     fun registration(@RequestBody userForm: UserForm, bindingResult: BindingResult): ResponseEntity<Any>{
-        loginValidator.validate(userForm, bindingResult)
         if (bindingResult.hasErrors()) {
             return ResponseEntity(bindingResult.allErrors, HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -54,11 +76,12 @@ class UserController{
         val user = User()
         user.email = userForm.email
         user.password = userForm.password
-        user.loginToken =  UUID.randomUUID()
+        user.loginToken =  UUID.randomUUID().toString()
 
         userService.save(user)
         securityService.autoLogin(userForm.email, userForm.password)
 
-        return ResponseEntity(RequestResponse("Account created the token is: ${user.loginToken.toString()}", 201), HttpStatus.CREATED)
+        return ResponseEntity(TokenResponse("Account created", 201,
+                user.loginToken.toString()), HttpStatus.CREATED)
     }
 }

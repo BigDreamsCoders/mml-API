@@ -41,16 +41,13 @@ data class User (
         var accountType: Int = 1,
 
         @Column(name = "u_token_verification")
-        @Type(type = "pg-uuid")
-        var verifyToken: UUID ?= null,
+        var verifyToken: String ?= null,
 
         @Column(name = "u_token_reset")
-        @Type(type = "pg-uuid")
-        var resetToken: UUID ?= null,
+        var resetToken: String ?= null,
 
         @Column(name = "u_login_token")
-        @Type(type = "pg-uuid")
-        var loginToken : UUID ?= null,
+        var loginToken : String ?= null,
 
         @Type(type = "int-array")
         @Column(name = "u_favorites", columnDefinition = "integer[]")
@@ -89,9 +86,6 @@ data class User (
 
         @Column(name = "u_sex")
         var sex  : Boolean = false,
-
-        @Column(name = "u_currently_hired")
-        var hired  : Boolean = false,
 
         @Column(name = "u_last_updated")
         var lastUpdated : String ?= null

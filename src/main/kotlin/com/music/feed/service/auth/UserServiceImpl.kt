@@ -33,4 +33,12 @@ class UserServiceImpl : UserService{
     override fun findByEmail(email: String): Optional<User> {
         return userRepository.findByEmail(email)
     }
+
+    override fun findByLoginToken(token : String) : Optional<User>{
+        return userRepository.findByLoginToken(token)
+    }
+
+    override fun findByEmailAndPassword(email: String, password: String): Optional<User> {
+        return userRepository.findByEmailAndPassword(email, password)
+    }
 }

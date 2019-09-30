@@ -32,17 +32,19 @@ class SecurityServiceImpl : SecurityService {
         else return "not-found"
     }
 
-    override fun autoLogin(loginKey: String, password: String) {
-        val userDetails = userDetailsService.loadUserByUsername(loginKey)
+    override fun autoLogin(username: String, password: String) {
+        val userDetails = userDetailsService.loadUserByUsername(username)
         val usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken(userDetails, password, userDetails.authorities)
 
         authenticationManager.authenticate(usernamePasswordAuthenticationToken)
 
         if (usernamePasswordAuthenticationToken.isAuthenticated) {
             SecurityContextHolder.getContext().authentication = usernamePasswordAuthenticationToken
-            logger.debug(String.format("Auto login %s successfully!", loginKey))
+            logger.debug(String.format("Auto login %s successfully!", username))
         }
     }
+
+
 
     companion object {
         private val logger = LoggerFactory.getLogger(SecurityServiceImpl::class.java)

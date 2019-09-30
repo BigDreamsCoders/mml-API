@@ -1,4 +1,4 @@
-package com.music.feed.domain
+package com.music.feed.responses
 
 data class RequestResponse(
         var message : String = "",

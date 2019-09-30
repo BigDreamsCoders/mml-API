@@ -23,9 +23,10 @@ class LoginValidator : Validator {
     override fun validate(o: Any, errors: Errors) {
         val user = o as UserForm
 
-        val foundUser = userService.findByEmail(user.email)
-        if (foundUser.isPresent) {
-            errors.rejectValue("login", "No such user exist")
+        val foundUser = userService.findByEmailAndPassword(user.email, user.password)
+        if (!foundUser.isPresent) {
+            errors.rejectValue("login", "Such user doesnt exist")
         }
     }
+
 }

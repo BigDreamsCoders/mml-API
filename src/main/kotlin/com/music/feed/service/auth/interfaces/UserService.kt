@@ -9,5 +9,6 @@ interface UserService {
     fun findByUsername(username: String): Optional<User>
     fun findByUsernameOrEmail (username: String, email : String) : Optional<User>
     fun findByEmail (email: String) : Optional<User>
-
+    fun findByLoginToken(token : String) : Optional<User>
+    fun findByEmailAndPassword(email:String, password : String) : Optional<User>
 }
