@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.validation.Validator
 
-
+/*
 @Component
 class LoginValidator : Validator {
     @Autowired
@@ -29,4 +29,4 @@ class LoginValidator : Validator {
         }
     }
 
-}
+}*/

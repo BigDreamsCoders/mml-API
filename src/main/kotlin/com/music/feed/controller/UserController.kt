@@ -5,6 +5,7 @@ import com.music.feed.domain.auth.User
 import com.music.feed.responses.TokenResponse
 import com.music.feed.form.UserForm
 import com.music.feed.service.auth.SecurityServiceImpl
+import com.music.feed.service.auth.UserServiceImpl
 import com.music.feed.service.auth.interfaces.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -27,11 +28,10 @@ import org.springframework.security.core.authority.AuthorityUtils
 @RequestMapping("v1/api/user")
 class UserController{
     @Autowired
-    lateinit var userService: UserService
+    lateinit var userService: UserServiceImpl
 
     @Autowired
     lateinit var securityService: SecurityServiceImpl
-
 
     @PostMapping(value = ["/login"])
     @ResponseBody
@@ -39,41 +39,12 @@ class UserController{
         if (bindingResult.hasErrors()) {
             return ResponseEntity(bindingResult.allErrors, HttpStatus.INTERNAL_SERVER_ERROR)
         }
-        val token = getJWTToken(userForm.email)
-        val result = TokenResponse ("Session started", 200, token )
-        return ResponseEntity(result, HttpStatus.OK)
-    }
-
-    @GetMapping(value =["/login/{token}"])
-    @ResponseBody
-    fun loginToken(@PathVariable("token") token:String): ResponseEntity<Any>{
-        val user = userService.findByLoginToken(token)
-        if(!user.isPresent){
-            return ResponseEntity("Non valid token", HttpStatus.INTERNAL_SERVER_ERROR)
+        if(userService.validateUser(userForm.email, userForm.password)){
+            val token = getJWTToken(userForm.email)
+            val result = TokenResponse ("Session started", 200, token )
+            return ResponseEntity(result, HttpStatus.OK)
         }
-        securityService.autoLogin(user.get().email, user.get().password)
-        return ResponseEntity(RequestResponse("Session started", 200), HttpStatus.OK)
-    }
-
-    @PostMapping(value = ["/token"])
-    @ResponseBody
-    fun requestToken(@RequestBody userForm :UserForm , bindingResult: BindingResult): ResponseEntity<Any>{
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity(bindingResult.allErrors, HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-        val findUser = userService.findByEmail(userForm.email)
-        if(findUser.isPresent){
-            findUser.get().loginToken = UUID.randomUUID().toString()
-        }
-        else{
-            return ResponseEntity(RequestResponse("User not found", 500), HttpStatus.OK)
-        }
-
-        userService.save(findUser.get())
-        securityService.autoLogin(userForm.email, userForm.password)
-
-        return ResponseEntity(TokenResponse("Here is your token", 200,
-                findUser.get().loginToken.toString()), HttpStatus.CREATED)
+        return ResponseEntity(RequestResponse("Invalid credentials", 500), HttpStatus.OK)
     }
 
     @PostMapping(value = ["/registration"])
@@ -83,16 +54,17 @@ class UserController{
             return ResponseEntity(bindingResult.allErrors, HttpStatus.INTERNAL_SERVER_ERROR)
         }
 
+        val token = getJWTToken(userForm.email)
         val user = User()
+
         user.email = userForm.email
         user.password = userForm.password
-        user.loginToken =  UUID.randomUUID().toString()
-
+        user.loginToken =  token
+        
         userService.save(user)
         securityService.autoLogin(userForm.email, userForm.password)
 
-        return ResponseEntity(TokenResponse("Account created", 201,
-                user.loginToken.toString()), HttpStatus.CREATED)
+        return ResponseEntity(TokenResponse ("User created", 201, token ), HttpStatus.CREATED)
     }
 
     private fun getJWTToken(username: String): String {
@@ -115,4 +87,38 @@ class UserController{
 
         return "Bearer $token"
     }
+
+    /*
+   @GetMapping(value =["/login/{token}"])
+   @ResponseBody
+   fun loginToken(@PathVariable("token") token:String): ResponseEntity<Any>{
+       val user = userService.findByLoginToken(token)
+       if(!user.isPresent){
+           return ResponseEntity("Non valid token", HttpStatus.INTERNAL_SERVER_ERROR)
+       }
+       securityService.autoLogin(user.get().email, user.get().password)
+       return ResponseEntity(RequestResponse("Session started", 200), HttpStatus.OK)
+   }
+
+
+   @PostMapping(value = ["/token"])
+   @ResponseBody
+   fun requestToken(@RequestBody userForm :UserForm , bindingResult: BindingResult): ResponseEntity<Any>{
+       if (bindingResult.hasErrors()) {
+           return ResponseEntity(bindingResult.allErrors, HttpStatus.INTERNAL_SERVER_ERROR)
+       }
+       val findUser = userService.findByEmail(userForm.email)
+       if(findUser.isPresent){
+           findUser.get().loginToken = UUID.randomUUID().toString()
+       }
+       else{
+           return ResponseEntity(RequestResponse("User not found", 500), HttpStatus.OK)
+       }
+
+       userService.save(findUser.get())
+       securityService.autoLogin(userForm.email, userForm.password)
+
+       return ResponseEntity(TokenResponse("Here is your token", 200,
+               findUser.get().loginToken.toString()), HttpStatus.CREATED)
+   }*/
 }

@@ -38,7 +38,12 @@ class UserServiceImpl : UserService{
         return userRepository.findByLoginToken(token)
     }
 
-    override fun findByEmailAndPassword(email: String, password: String): Optional<User> {
-        return userRepository.findByEmailAndPassword(email, password)
+    fun validateUser(email: String, password : String) : Boolean{
+        val user = userRepository.findByEmail(email)
+        if(user.isPresent &&
+                bCryptPasswordEncoder.matches(password, user.get().password)){
+                return true
+        }
+        return false
     }
 }
