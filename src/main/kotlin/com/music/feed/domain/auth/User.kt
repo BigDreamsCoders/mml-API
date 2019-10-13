@@ -41,10 +41,13 @@ data class User (
         var accountType: Int = 1,
 
         @Column(name = "u_token_verification")
-        var tokenVerify: String = "",
+        var verifyToken: String ?= null,
 
         @Column(name = "u_token_reset")
-        var tokenReset: String = "",
+        var resetToken: String ?= null,
+
+        @Column(name = "u_login_token")
+        var loginToken : String ?= null,
 
         @Type(type = "int-array")
         @Column(name = "u_favorites", columnDefinition = "integer[]")
@@ -83,9 +86,6 @@ data class User (
 
         @Column(name = "u_sex")
         var sex  : Boolean = false,
-
-        @Column(name = "u_currently_hired")
-        var hired  : Boolean = false,
 
         @Column(name = "u_last_updated")
         var lastUpdated : String ?= null
