@@ -39,7 +39,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .addFilterAfter(JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/v1/user/login",
-                        "api/v1/user/registration").permitAll()
+                        "/api/v1/user/registration").permitAll()
                 .anyRequest().authenticated()
     }
 
