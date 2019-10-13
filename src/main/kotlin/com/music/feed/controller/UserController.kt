@@ -7,6 +7,7 @@ import com.music.feed.form.UserForm
 import com.music.feed.service.auth.SecurityServiceImpl
 import com.music.feed.service.auth.UserServiceImpl
 import com.music.feed.service.auth.interfaces.UserService
+import com.music.feed.util.JwtTokenUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -33,6 +34,9 @@ class UserController{
     @Autowired
     lateinit var securityService: SecurityServiceImpl
 
+    @Autowired
+    lateinit var jwtTokenUtil: JwtTokenUtil
+
     @PostMapping(value = ["/login"])
     @ResponseBody
     fun loginProcess(@RequestBody userForm :UserForm , bindingResult: BindingResult): ResponseEntity<Any>{
@@ -41,9 +45,9 @@ class UserController{
         }
         val user = userService.validateUser(userForm.email, userForm.password)
         if(user.isPresent){
-            val token = getJWTToken(userForm.email)
-            user.get().loginToken = token
-            userService.save(user.get())
+            val token = jwtTokenUtil.getJWTToken(userForm.email)
+            user.get().loginToken = token.replace("Bearer ", "")
+            userService.saveNoCrypt(user.get())
             val result = TokenResponse ("Session started", 200, token )
             return ResponseEntity(result, HttpStatus.OK)
         }
@@ -57,7 +61,7 @@ class UserController{
             return ResponseEntity(bindingResult.allErrors, HttpStatus.INTERNAL_SERVER_ERROR)
         }
 
-        val token = getJWTToken(userForm.email)
+        val token = jwtTokenUtil.getJWTToken(userForm.email)
         val user = User()
 
         user.email = userForm.email
@@ -70,25 +74,11 @@ class UserController{
         return ResponseEntity(TokenResponse ("User created", 201, token ), HttpStatus.CREATED)
     }
 
-    private fun getJWTToken(username: String): String {
-        val secretKey = "mySecretKey"
-        val grantedAuthorities = AuthorityUtils
-                .commaSeparatedStringToAuthorityList("ROLE_USER")
-
-        val token = Jwts
-                .builder()
-                .setId("softtekJWT")
-                .setSubject(username)
-                .claim("authorities",
-                        grantedAuthorities.stream()
-                                .map{ it.authority }
-                                .collect(Collectors.toList<Any>()))
-                .setIssuedAt(Date(System.currentTimeMillis()))
-                .setExpiration(Date(System.currentTimeMillis() + 600000))
-                .signWith(SignatureAlgorithm.HS512,
-                        secretKey.toByteArray()).compact()
-
-        return "Bearer $token"
+    @GetMapping(value=["/token"])
+    @ResponseBody
+    fun tokenTest(): ResponseEntity<Any>{
+        return ResponseEntity(RequestResponse("The token is still valid", 200),
+                HttpStatus.OK)
     }
 
     /*

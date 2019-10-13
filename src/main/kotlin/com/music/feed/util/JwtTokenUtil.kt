@@ -4,7 +4,11 @@ import org.springframework.stereotype.Component
 import java.io.Serializable
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.SignatureAlgorithm
+import org.springframework.security.core.authority.AuthorityUtils
+import java.util.*
 import java.util.function.Function
+import java.util.stream.Collectors
 
 
 @Component
@@ -23,5 +27,26 @@ class JwtTokenUtil : Serializable {
 
     private fun getAllClaimsFromToken(token: String): Claims {
         return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).body
+    }
+
+     fun getJWTToken(username: String): String {
+        val secretKey = "mySecretKey"
+        val grantedAuthorities = AuthorityUtils
+                .commaSeparatedStringToAuthorityList("ROLE_USER")
+
+        val token = Jwts
+                .builder()
+                .setId("softtekJWT")
+                .setSubject(username)
+                .claim("authorities",
+                        grantedAuthorities.stream()
+                                .map{ it.authority }
+                                .collect(Collectors.toList<Any>()))
+                .setIssuedAt(Date(System.currentTimeMillis()))
+                .setExpiration(Date(System.currentTimeMillis() + 600000))
+                .signWith(SignatureAlgorithm.HS512,
+                        secretKey.toByteArray()).compact()
+
+        return "Bearer $token"
     }
 }

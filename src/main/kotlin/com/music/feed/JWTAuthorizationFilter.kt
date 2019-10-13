@@ -18,6 +18,7 @@ import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.UnsupportedJwtException
+import java.lang.Exception
 
 
 class JWTAuthorizationFilter : OncePerRequestFilter() {
@@ -50,6 +51,10 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
             response.status = HttpServletResponse.SC_FORBIDDEN
             response.sendError(HttpServletResponse.SC_FORBIDDEN,  e.message)
             return
+        }
+        catch (e : Exception){
+            response.status = 500
+            response.sendError(500, e.message)
         }
 
     }

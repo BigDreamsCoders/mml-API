@@ -22,6 +22,10 @@ class UserServiceImpl : UserService{
         userRepository.save(user)
     }
 
+    override fun saveNoCrypt(user: User){
+        userRepository.save(user)
+    }
+
     override fun findByUsername(username: String): Optional<User> {
         return userRepository.findByUsername(username)
     }
