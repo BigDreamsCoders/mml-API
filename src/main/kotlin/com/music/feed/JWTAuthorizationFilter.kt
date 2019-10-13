@@ -1,7 +1,6 @@
 package com.music.feed
 
 import java.io.IOException
-import java.util.List
 import java.util.stream.Collectors
 
 import javax.servlet.FilterChain
@@ -30,9 +29,9 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
         try {
-            if (existeJWTToken(request, response)) {
+            if (existingJWTToken(request, response)) {
                 val claims = validateToken(request)
-                if (claims.get("authorities") != null) {
+                if (claims["authorities"] != null) {
                     setUpSpringAuthentication(claims)
                 } else {
                     SecurityContextHolder.clearContext()
@@ -65,7 +64,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
      *
      */
     private fun setUpSpringAuthentication(claims: Claims) {
-        val authorities = claims.get("authorities") as List<*>
+        val authorities = claims["authorities"] as List<*>
 
         val auth = UsernamePasswordAuthenticationToken(claims.subject, null,
                 authorities.stream().map
@@ -75,7 +74,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
 
     }
 
-    private fun existeJWTToken(request: HttpServletRequest, res: HttpServletResponse): Boolean {
+    private fun existingJWTToken(request: HttpServletRequest, res: HttpServletResponse): Boolean {
         val authenticationHeader = request.getHeader(HEADER)
         return !(authenticationHeader == null || !authenticationHeader.startsWith(PREFIX))
     }
