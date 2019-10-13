@@ -4,6 +4,7 @@ import com.music.feed.responses.RequestResponse
 import com.music.feed.domain.auth.User
 import com.music.feed.responses.TokenResponse
 import com.music.feed.form.UserForm
+import com.music.feed.responses.ErrorResponse
 import com.music.feed.service.auth.SecurityServiceImpl
 import com.music.feed.service.auth.UserServiceImpl
 import com.music.feed.service.auth.interfaces.UserService
@@ -13,13 +14,9 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
-import java.util.*
-import org.apache.tomcat.jni.User.username
 import java.util.stream.Collectors
-import org.springframework.security.core.GrantedAuthority
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
-import org.springframework.security.core.authority.AuthorityUtils
+
+import javax.validation.Valid
 
 
 
@@ -39,9 +36,13 @@ class UserController{
 
     @PostMapping(value = ["/login"])
     @ResponseBody
-    fun loginProcess(@RequestBody userForm :UserForm , bindingResult: BindingResult): ResponseEntity<Any>{
+    fun loginProcess(@Valid @RequestBody userForm :UserForm, bindingResult: BindingResult): ResponseEntity<Any>{
         if (bindingResult.hasErrors()) {
-            return ResponseEntity(bindingResult.allErrors, HttpStatus.INTERNAL_SERVER_ERROR)
+            val problems : List<String> = bindingResult.fieldErrors.stream().map {
+                "@" + it.field.toUpperCase() + ":" + it.defaultMessage }.collect(Collectors.toList())
+
+            return ResponseEntity(ErrorResponse("Can't perform action due to errors",
+                    problems,422), HttpStatus.UNPROCESSABLE_ENTITY)
         }
         val user = userService.validateUser(userForm.email, userForm.password)
         if(user.isPresent){
@@ -51,19 +52,23 @@ class UserController{
             val result = TokenResponse ("Session started", 200, token )
             return ResponseEntity(result, HttpStatus.OK)
         }
-        return ResponseEntity(RequestResponse("Invalid credentials", 500), HttpStatus.OK)
+        return ResponseEntity(RequestResponse("Invalid credentials", 401), HttpStatus.UNAUTHORIZED)
     }
 
     @PostMapping(value = ["/registration"])
     @ResponseBody
-    fun registration(@RequestBody userForm: UserForm, bindingResult: BindingResult): ResponseEntity<Any>{
+    fun registration(@Valid @RequestBody userForm: UserForm, bindingResult: BindingResult): ResponseEntity<Any>{
         if (bindingResult.hasErrors()) {
-            return ResponseEntity(bindingResult.allErrors, HttpStatus.INTERNAL_SERVER_ERROR)
+            val problems : List<String> = bindingResult.fieldErrors.stream().map {
+                "@" + it.field.toUpperCase() + ":" + it.defaultMessage }.collect(Collectors.toList())
+
+            return ResponseEntity(ErrorResponse("Can't perform action due to errors",
+                    problems,422), HttpStatus.UNPROCESSABLE_ENTITY)
         }
         // Move to validator
         if(userService.findByEmail(userForm.email).isPresent){
-            return ResponseEntity(RequestResponse ("Email address in use", 500 ),
-                    HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity(RequestResponse ("Email address in use", 401 ),
+                    HttpStatus.UNAUTHORIZED)
         }
 
         val token = jwtTokenUtil.getJWTToken(userForm.email)
@@ -76,7 +81,8 @@ class UserController{
         userService.save(user)
         securityService.autoLogin(userForm.email, userForm.password)
 
-        return ResponseEntity(TokenResponse ("User created", 201, token ), HttpStatus.CREATED)
+        return ResponseEntity(TokenResponse ("User created", 201, token ),
+                HttpStatus.CREATED)
     }
 
     @GetMapping(value=["/token"])
