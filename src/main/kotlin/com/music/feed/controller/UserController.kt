@@ -26,7 +26,7 @@ import org.springframework.security.core.authority.AuthorityUtils
 
 
 @RestController
-@RequestMapping("v1/api/user")
+@RequestMapping("api/v1/user")
 class UserController{
     @Autowired
     lateinit var userService: UserServiceImpl
