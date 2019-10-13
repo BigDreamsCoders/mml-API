@@ -38,12 +38,12 @@ class UserServiceImpl : UserService{
         return userRepository.findByLoginToken(token)
     }
 
-    fun validateUser(email: String, password : String) : Boolean{
+    fun validateUser(email: String, password : String) : Optional<User>{
         val user = userRepository.findByEmail(email)
         if(user.isPresent &&
                 bCryptPasswordEncoder.matches(password, user.get().password)){
-                return true
+                return user
         }
-        return false
+        return Optional.empty()
     }
 }

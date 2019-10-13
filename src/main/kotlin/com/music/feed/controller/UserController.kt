@@ -39,8 +39,11 @@ class UserController{
         if (bindingResult.hasErrors()) {
             return ResponseEntity(bindingResult.allErrors, HttpStatus.INTERNAL_SERVER_ERROR)
         }
-        if(userService.validateUser(userForm.email, userForm.password)){
+        val user = userService.validateUser(userForm.email, userForm.password)
+        if(user.isPresent){
             val token = getJWTToken(userForm.email)
+            user.get().loginToken = token
+            userService.save(user.get())
             val result = TokenResponse ("Session started", 200, token )
             return ResponseEntity(result, HttpStatus.OK)
         }
@@ -59,8 +62,8 @@ class UserController{
 
         user.email = userForm.email
         user.password = userForm.password
-        user.loginToken =  token
-        
+        user.loginToken =  token.replace("Bearer ", "")
+
         userService.save(user)
         securityService.autoLogin(userForm.email, userForm.password)
 
