@@ -3,6 +3,7 @@ package com.music.feed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.server.authentication.HttpBasicServerAuthenticationEntryPoint
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint
 
@@ -33,13 +35,11 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
-        http
-                .csrf().disable()
-                .exceptionHandling()
-                .and()
+        http.csrf().disable()
+                .addFilterAfter(JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
                 .authorizeRequests()
-                .antMatchers("v1/api/**/**").permitAll()
-                .antMatchers("v1/api/admin/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/v1/api/user/login").permitAll()
+                .anyRequest().authenticated()
     }
 
     @Bean

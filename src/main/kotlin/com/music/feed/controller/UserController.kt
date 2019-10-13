@@ -12,6 +12,16 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.util.*
+import org.apache.tomcat.jni.User.username
+import java.util.stream.Collectors
+import org.springframework.security.core.GrantedAuthority
+import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.SignatureAlgorithm
+import org.springframework.security.core.authority.AuthorityUtils
+
+
+
+
 
 @RestController
 @RequestMapping("v1/api/user")
@@ -29,9 +39,9 @@ class UserController{
         if (bindingResult.hasErrors()) {
             return ResponseEntity(bindingResult.allErrors, HttpStatus.INTERNAL_SERVER_ERROR)
         }
-
-        securityService.autoLogin(userForm.email, userForm.password)
-        return ResponseEntity(RequestResponse("Session started", 200), HttpStatus.OK)
+        val token = getJWTToken(userForm.email)
+        val result = TokenResponse ("Session started", 200, token )
+        return ResponseEntity(result, HttpStatus.OK)
     }
 
     @GetMapping(value =["/login/{token}"])
@@ -83,5 +93,26 @@ class UserController{
 
         return ResponseEntity(TokenResponse("Account created", 201,
                 user.loginToken.toString()), HttpStatus.CREATED)
+    }
+
+    private fun getJWTToken(username: String): String {
+        val secretKey = "mySecretKey"
+        val grantedAuthorities = AuthorityUtils
+                .commaSeparatedStringToAuthorityList("ROLE_USER")
+
+        val token = Jwts
+                .builder()
+                .setId("softtekJWT")
+                .setSubject(username)
+                .claim("authorities",
+                        grantedAuthorities.stream()
+                                .map{ it.authority }
+                                .collect(Collectors.toList<Any>()))
+                .setIssuedAt(Date(System.currentTimeMillis()))
+                .setExpiration(Date(System.currentTimeMillis() + 600000))
+                .signWith(SignatureAlgorithm.HS512,
+                        secretKey.toByteArray()).compact()
+
+        return "Bearer $token"
     }
 }
