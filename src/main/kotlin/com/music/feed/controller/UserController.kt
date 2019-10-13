@@ -60,6 +60,11 @@ class UserController{
         if (bindingResult.hasErrors()) {
             return ResponseEntity(bindingResult.allErrors, HttpStatus.INTERNAL_SERVER_ERROR)
         }
+        // Move to validator
+        if(userService.findByEmail(userForm.email).isPresent){
+            return ResponseEntity(RequestResponse ("Email address in use", 500 ),
+                    HttpStatus.INTERNAL_SERVER_ERROR)
+        }
 
         val token = jwtTokenUtil.getJWTToken(userForm.email)
         val user = User()
