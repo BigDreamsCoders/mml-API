@@ -24,6 +24,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("api/v1/user")
+@CrossOrigin
 class UserController{
     @Autowired
     lateinit var userService: UserServiceImpl
