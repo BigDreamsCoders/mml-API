@@ -24,7 +24,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("api/v1/user")
-@CrossOrigin
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class UserController{
     @Autowired
     lateinit var userService: UserServiceImpl
