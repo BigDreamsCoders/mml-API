@@ -40,7 +40,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                     .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/v1/user/login",
                         "/api/v1/user/registration").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().authenticated().and().cors()
     }
 
     @Bean
