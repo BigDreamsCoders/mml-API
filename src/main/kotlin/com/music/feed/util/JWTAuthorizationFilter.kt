@@ -1,4 +1,4 @@
-package com.music.feed
+package com.music.feed.util
 
 import java.io.IOException
 import java.util.stream.Collectors
