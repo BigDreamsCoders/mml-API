@@ -34,7 +34,7 @@ class UserTest  {
         testUser.email = "000123456@uca.edu.sv"
         testUser.password = "testPassword"
 
-        val uri  = "user/login"
+        val uri  = "user/registration"
         val mvcResult : MvcResult = mockMvc.perform(MockMvcRequestBuilders.post(base+uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn()
 
