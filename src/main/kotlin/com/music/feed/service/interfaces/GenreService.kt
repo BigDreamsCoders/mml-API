@@ -7,5 +7,5 @@ interface GenreService {
     fun save(genre : Genre)
     fun findByName(name: String): Page<Genre>
     fun findByNameIsLike(name: String) : Page<Genre>
-    fun findByNameIsLikeAndPhrasesAndNameIsLike(name : String) : Page<Genre>
+    //fun findByNameIsLikeAndPhrasesAndNameIsLike(name : String) : Page<Genre>
 }

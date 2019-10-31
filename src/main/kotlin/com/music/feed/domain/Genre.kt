@@ -10,7 +10,7 @@ import javax.persistence.*
 
 //Entidad de Genero
 @Entity
-@Table(name="user", schema = "public")
+@Table(name="genre", schema = "public")
 @TypeDefs(
         TypeDef(name = "int-array", typeClass = IntArrayType::class),
         TypeDef(name="jsonb", typeClass = JsonBinaryType::class)
@@ -31,10 +31,10 @@ data class Genre(
         var name: String = "Genre",
 
         @Column(name = "c_popularity")
-        var popularity: Int = 0,
+        var popularity: Int = 0
 
-        @Column(name = "c_phrases")
-        var phrases: Set<Phrase>? = null
+        /*@Column(name = "c_phrases")
+        var phrases: Set<Phrase>? = null*/
 )
 {}
 

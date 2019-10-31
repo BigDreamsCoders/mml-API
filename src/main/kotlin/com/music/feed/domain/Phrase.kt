@@ -4,6 +4,8 @@ import org.hibernate.annotations.Type
 import java.util.*
 import javax.persistence.*
 
+@Entity
+@Table(name="phrase", schema = "public")
 data class Phrase(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,7 +18,7 @@ data class Phrase(
         @Column(name = "p_id", insertable = false)
         var localId: Int? = null,
 
-        @OneToMany(mappedBy = "")
+        //@OneToMany(mappedBy = "")
         @Column(name = "p_name")
         var name : String = ""
 ){
