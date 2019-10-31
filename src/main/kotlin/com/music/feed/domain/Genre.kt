@@ -8,6 +8,7 @@ import org.hibernate.annotations.TypeDefs
 import java.util.*
 import javax.persistence.*
 
+//Entidad de Genero
 @Entity
 @Table(name="user", schema = "public")
 @TypeDefs(
