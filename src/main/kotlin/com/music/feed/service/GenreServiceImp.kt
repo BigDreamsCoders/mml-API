@@ -19,6 +19,10 @@ class GenreServiceImp : GenreService{
         genreRepository.save(genre)
     }
 
+    fun findAll():List<Genre>{
+        return genreRepository.findAll().toList()
+    }
+
     override fun findByName(name: String): Page<Genre> {
         val page:Pageable = PageRequest.of(0,5)
         return genreRepository.findByName(name, page);

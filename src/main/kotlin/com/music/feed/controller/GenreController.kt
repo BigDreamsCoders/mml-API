@@ -1,5 +1,6 @@
 package com.music.feed.controller
 
+import com.music.feed.domain.Genre
 import com.music.feed.form.GenreForm
 import com.music.feed.responses.ErrorResponse
 import com.music.feed.responses.RequestResponse
@@ -17,6 +18,12 @@ import javax.validation.Valid
 class GenreController{
     @Autowired
     lateinit var genreServiceImp: GenreServiceImp
+
+    @GetMapping(value=["/all"])
+    @ResponseBody
+    fun getGenres():List<Genre>{
+        return genreServiceImp.findAll()
+    }
 
     @PostMapping
     @ResponseBody
