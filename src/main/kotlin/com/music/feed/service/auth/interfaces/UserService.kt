@@ -1,10 +1,12 @@
 package com.music.feed.service.auth.interfaces
 
 import com.music.feed.domain.auth.User
+import com.music.feed.form.UserForm
 import java.util.*
 
 interface UserService {
     fun save(user: User)
+    fun save(user: UserForm, token : String)
     fun saveNoCrypt(user:User)
     fun findByUsername(username: String): Optional<User>
     fun findByUsernameOrEmail (username: String, email : String) : Optional<User>

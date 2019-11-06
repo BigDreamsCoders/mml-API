@@ -1,6 +1,7 @@
 package com.music.feed.service.auth
 
 import com.music.feed.domain.auth.User
+import com.music.feed.form.UserForm
 import com.music.feed.repository.UserRepository
 import com.music.feed.service.auth.interfaces.UserService
 import org.springframework.stereotype.Service
@@ -18,6 +19,17 @@ class UserServiceImpl : UserService{
     lateinit var bCryptPasswordEncoder: BCryptPasswordEncoder
 
     override fun save(user: User) {
+        user.password=bCryptPasswordEncoder.encode(user.password)
+        userRepository.save(user)
+    }
+
+    override fun save(userForm : UserForm, token : String){
+        val user = User()
+
+        user.email = userForm.email
+        user.password = userForm.password
+        user.loginToken =  token.replace("Bearer ", "")
+
         user.password=bCryptPasswordEncoder.encode(user.password)
         userRepository.save(user)
     }
@@ -49,5 +61,14 @@ class UserServiceImpl : UserService{
                 return user
         }
         return Optional.empty()
+    }
+
+    fun delete(email : String) : Boolean{
+        val user = userRepository.findByEmail(email)
+        if(user.isPresent){
+            userRepository.delete(user.get())
+            return true
+        }
+        return false
     }
 }

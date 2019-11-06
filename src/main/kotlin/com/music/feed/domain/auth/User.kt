@@ -23,11 +23,6 @@ data class User (
         @Column(name = "u_code", insertable = false)
         var code: UUID? = null,
 
-        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_u_id_seq")
-        @SequenceGenerator(sequenceName = "user_u_id_seq", name = "user_u_id_seq", initialValue = 1, allocationSize = 1)
-        @Column(name = "u_id", insertable = false)
-        var localId: Int? = null,
-
         @Column(name = "u_email")
         var email: String = "",
 
