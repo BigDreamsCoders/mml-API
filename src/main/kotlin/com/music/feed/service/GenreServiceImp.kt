@@ -1,7 +1,7 @@
 package com.music.feed.service
 
 import com.music.feed.domain.Genre
-import com.music.feed.domain.Phrase
+import com.music.feed.form.GenreForm
 import com.music.feed.repository.GenreRepository
 import com.music.feed.service.interfaces.GenreService
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,6 +19,11 @@ class GenreServiceImp : GenreService{
         genreRepository.save(genre)
     }
 
+    fun save(genreForm : GenreForm){
+        val genre  = Genre(genreForm)
+        genreRepository.save(genre)
+    }
+
     fun findAll():List<Genre>{
         return genreRepository.findAll().toList()
     }
@@ -33,9 +38,8 @@ class GenreServiceImp : GenreService{
         return genreRepository.findByNameIsLike(name, page)
     }
 
-    /*override fun findByNameIsLikeAndPhrasesAndNameIsLike(name: String): Page<Genre> {
+    override fun findByNameIsLikeAndPhrasesAndNameIsLike(name: String): Page<Genre> {
         val page:Pageable = PageRequest.of(0,5)
-        val phrases = setOf<Phrase>();
-        return genreRepository.findByNameIsLikeAndPhrasesAndNameIsLike(name, phrases, page)
-    }*/
+        return genreRepository.findAllMatches(name, page)
+    }
 }

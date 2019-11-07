@@ -33,7 +33,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         http
                 .cors().and()
                 .addFilterAfter(JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
-                    .authorizeRequests()
+                .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/v1/user/login",
                         "/api/v1/user/registration").permitAll()
                 .anyRequest().authenticated()
