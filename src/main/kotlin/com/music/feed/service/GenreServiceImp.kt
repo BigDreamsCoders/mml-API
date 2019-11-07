@@ -9,11 +9,13 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class GenreServiceImp : GenreService{
     @Autowired
     lateinit var genreRepository: GenreRepository
+
 
     override fun save(genre : Genre){
         genreRepository.save(genre)
@@ -41,5 +43,12 @@ class GenreServiceImp : GenreService{
     override fun findByNameIsLikeAndPhrasesAndNameIsLike(name: String): Page<Genre> {
         val page:Pageable = PageRequest.of(0,5)
         return genreRepository.findAllMatches(name, page)
+    }
+
+    override fun findByCode(code: UUID): Optional<Genre> {
+        return genreRepository.findByCode(code)
+    }
+    override fun delete(genre: Genre){
+        genreRepository.delete(genre)
     }
 }
