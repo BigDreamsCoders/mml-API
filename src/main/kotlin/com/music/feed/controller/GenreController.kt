@@ -40,4 +40,15 @@ class GenreController{
         genreServiceImp.save(genreForm)
         return ResponseEntity(RequestResponse("Genre created", 401), HttpStatus.CREATED)
     }
+
+    @DeleteMapping("/{code}")
+    @ResponseBody
+    fun deleteGenre(@PathVariable code : UUID) : ResponseEntity<Any> {
+        val genre = genreServiceImp.findByCode(code)
+        if(!genre.isPresent){
+            return ResponseEntity(RequestResponse("No genre found matching that ID", 500), HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        genreServiceImp.delete(genre.get())
+        return ResponseEntity(RequestResponse("Genre deleted", 200), HttpStatus.OK)
+    }
 }
