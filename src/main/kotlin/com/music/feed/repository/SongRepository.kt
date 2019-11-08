@@ -7,5 +7,5 @@ import java.util.*
 
 @Repository
 interface SongRepository : CrudRepository<Song, UUID> {
-
+    fun findByCode(code : UUID) : Optional<Song>
 }

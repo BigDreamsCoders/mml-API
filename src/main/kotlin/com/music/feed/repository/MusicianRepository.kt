@@ -11,5 +11,5 @@ import java.util.*
 
 @Repository
 interface MusicianRepository : CrudRepository<Musician, UUID> {
-
+    fun findByCode(code : UUID) : Optional<Musician>
 }
