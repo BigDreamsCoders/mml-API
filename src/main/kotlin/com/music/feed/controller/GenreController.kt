@@ -41,7 +41,7 @@ class GenreController{
         return ResponseEntity(RequestResponse("Genre created", 401), HttpStatus.CREATED)
     }
 
-    @DeleteMapping("/{code}")
+    @DeleteMapping(value = ["/{code}"])
     @ResponseBody
     fun deleteGenre(@PathVariable code : UUID) : ResponseEntity<Any> {
         val genre = genreServiceImp.findByCode(code)

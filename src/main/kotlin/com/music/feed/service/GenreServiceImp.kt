@@ -21,12 +21,12 @@ class GenreServiceImp : GenreService{
         genreRepository.save(genre)
     }
 
-    fun save(genreForm : GenreForm){
+    override fun save(genreForm : GenreForm){
         val genre  = Genre(genreForm)
         genreRepository.save(genre)
     }
 
-    fun findAll():List<Genre>{
+    override fun findAll():List<Genre>{
         return genreRepository.findAll().toList()
     }
 
