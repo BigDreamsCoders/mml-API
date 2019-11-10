@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.music</groupId>
-    <artifactId>music</artifactId>
+    <artifactId>mml-music</artifactId>
     <version>1.0.0</version>
-    <name>music</name>
+    <name>mml-music</name>
     <description>API designed for music</description>
 
     <properties>
@@ -31,6 +31,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -60,15 +65,21 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vladmihalcea</groupId>
+            <artifactId>hibernate-types-52</artifactId>
+            <version>2.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -82,15 +93,15 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.vladmihalcea</groupId>
-            <artifactId>hibernate-types-52</artifactId>
-            <version>2.1.1</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
-        <sourceDirectory>src/main/kotlin</sourceDirectory>
-        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
+        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -140,6 +151,7 @@
                 </dependencies>
             </plugin>
         </plugins>
+
     </build>
 
 </project>
