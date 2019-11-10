@@ -39,6 +39,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
+       //http.authorizeRequests().antMatchers("/").permitAll();
     }
 
     @Bean

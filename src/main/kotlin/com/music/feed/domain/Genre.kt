@@ -1,7 +1,6 @@
 package com.music.feed.domain
 
 import com.music.feed.form.GenreForm
-import com.sun.xml.internal.fastinfoset.util.StringArray
 import com.vladmihalcea.hibernate.type.array.IntArrayType
 import com.vladmihalcea.hibernate.type.array.StringArrayType
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType
