@@ -11,13 +11,20 @@ import java.util.function.Function
 import java.util.stream.Collectors
 import java.util.Calendar
 import com.music.feed.util.JwtTokenUtil
-
-
+import javax.servlet.http.HttpServletRequest
 
 
 @Component
 class JwtTokenUtil : Serializable {
+
+    private val HEADER = "Authorization"
+    private val PREFIX = "Bearer "
     private val SECRET = "mySecretKey"
+
+    fun getEmailFromToken(request: HttpServletRequest): String {
+        val jwtToken = request.getHeader(HEADER).replace(PREFIX, "")
+        return Jwts.parser().setSigningKey(SECRET.toByteArray()).parseClaimsJws(jwtToken).body["sub"].toString()
+    }
 
     //retrieve username from jwt token
     fun getEmailFromToken(token: String): String {
@@ -40,7 +47,7 @@ class JwtTokenUtil : Serializable {
          c.add(Calendar.DATE, 7)
          dt = c.time
 
-        val secretKey = "mySecretKey"
+        val secretKey = SECRET
         val grantedAuthorities = AuthorityUtils
                 .commaSeparatedStringToAuthorityList("ROLE_USER")
 

@@ -24,6 +24,10 @@ class SongServiceImp : SongService{
         songRepository.save(song)
     }
 
+    override fun save(song: Song){
+        songRepository.save(song)
+    }
+
     override fun findAll(): List<Song> {
         return songRepository.findAll().toList()
     }
