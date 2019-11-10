@@ -12,7 +12,6 @@ import javax.persistence.*
 @Entity
 @Table(name="user", schema = "public")
 @TypeDefs(
-        TypeDef(name = "int-array", typeClass = IntArrayType::class),
         TypeDef(name="jsonb", typeClass = JsonBinaryType::class)
 )
 data class User (
@@ -22,11 +21,6 @@ data class User (
         @Type(type = "pg-uuid")
         @Column(name = "u_code", insertable = false)
         var code: UUID? = null,
-
-        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_u_id_seq")
-        @SequenceGenerator(sequenceName = "user_u_id_seq", name = "user_u_id_seq", initialValue = 1, allocationSize = 1)
-        @Column(name = "u_id", insertable = false)
-        var localId: Int? = null,
 
         @Column(name = "u_email")
         var email: String = "",
@@ -41,72 +35,38 @@ data class User (
         var accountType: Int = 1,
 
         @Column(name = "u_token_verification")
-        var verifyToken: String ?= null,
+        var verifyToken: String = "",
 
         @Column(name = "u_token_reset")
-        var resetToken: String ?= null,
+        var resetToken: String = "",
 
         @Column(name = "u_login_token")
-        var loginToken : String ?= null,
-
-        @Type(type = "int-array")
-        @Column(name = "u_favorites", columnDefinition = "integer[]")
-        var favorites: IntArray = intArrayOf(),
-
-        @Type(type = "int-array")
-        @Column(name = "u_not_liked", columnDefinition = "integer[]")
-        var unliked: IntArray = intArrayOf(),
+        var loginToken : String = "",
 
         @Column(name = "u_active")
         var active: Boolean = true,
 
         @Column(name = "u_date_created", insertable = false)
-        var dateCreated: String = "",
+        var dateCreated: String = Date().toString(),
 
         @Column(name = "u_profile_photo")
         var profilePhoto: String = "",
-
-        @Column(name = "u_address")
-        @Type(type = "jsonb")
-        var address : JsonBinaryType ?= null,
-
-        @Column(name = "u_document")
-        @Type(type = "jsonb")
-        var document : JsonBinaryType ?= null,
 
         @Column(name = "u_phone")
         @Type(type = "jsonb")
         var phone : JsonBinaryType ?= null,
 
         @Column(name = "u_names")
-        var names : String ? = null,
+        var names : String  = "",
 
-        @Column (name = "u_lastanmes")
-        var lastNames : String ?= null,
+        @Column (name = "u_surname")
+        var lastNames : String = "",
 
-        @Column(name = "u_sex")
-        var sex  : Boolean = false,
+        @Column(name = "u_gender")
+        var gender  : String = "not-specified",
 
         @Column(name = "u_last_updated")
-        var lastUpdated : String ?= null
+        var lastUpdated : String = Date().toString()
 
-) : Serializable
-{
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as User
-
-        if (favorites.contentEquals(other.favorites)) return true
-        if (unliked.contentEquals(other.unliked)) return true
-
-        return false
-    }
-
-    override fun hashCode(): Int {
-        var result = favorites.hashCode()
-        result = 31 * result + favorites.contentHashCode()
-        return result
-    }
+){
 }
