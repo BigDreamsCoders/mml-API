@@ -58,15 +58,17 @@ class RatingController {
         if(rating.isPresent){
             val ratingBefore = rating.get().value/song.get().rated
             val ratingNow = rateForm.value/song.get().rated
-            song.get().rating.subtract(BigDecimal(ratingBefore)).add(BigDecimal(ratingNow))
+            song.get().rating = song.get().rating.subtract(BigDecimal(ratingBefore)).add(BigDecimal(ratingNow))
             ratingServiceImp.save(rating.get(), rateForm)
             songServiceImp.save(song.get())
         }
         else{
             val y = song.get().rating.multiply(BigDecimal(song.get().rated))
-            val rated = song.get().rated++
-            val total = y.divide(BigDecimal(rated)).add(BigDecimal(rateForm.value/rated))
+            val rated = song.get().rated + 1
+            //val total = y.divide(BigDecimal(rated)).add(BigDecimal(rateForm.value/rated))
+            val total = y.add(BigDecimal(rateForm.value)).divide(BigDecimal(rated))
             song.get().rating = total
+            song.get().rated = rated
             ratingServiceImp.save(user.get(),song.get(), rateForm)
             songServiceImp.save(song.get())
         }

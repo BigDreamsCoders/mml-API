@@ -24,9 +24,9 @@ class MusicianServiceImp : MusicianService {
         return musicianRepository.findByCode(code)
     }
 
-    override fun save(musicianForm: MusicianForm, genre: Genre ) {
+    override fun save(musicianForm: MusicianForm, genre: Genre ):Musician {
         val musician = Musician(musicianForm, genre)
-        musicianRepository.save(musician)
+        return musicianRepository.save(musician)
     }
 
     override fun findAllByCodes(codes : List<String>) : Set<Musician>{

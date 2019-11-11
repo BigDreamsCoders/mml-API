@@ -19,9 +19,9 @@ class SongServiceImp : SongService{
         return songRepository.findByCode(code)
     }
 
-    override fun save(songForm: SongForm, genre: Genre, musicians: Set<Musician>) {
+    override fun save(songForm: SongForm, genre: Genre, musicians: Set<Musician>):Song{
         val song = Song(songForm, genre, musicians)
-        songRepository.save(song)
+        return songRepository.save(song)
     }
 
     override fun save(song: Song){

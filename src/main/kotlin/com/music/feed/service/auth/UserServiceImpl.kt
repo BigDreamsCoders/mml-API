@@ -23,7 +23,7 @@ class UserServiceImpl : UserService{
         userRepository.save(user)
     }
 
-    override fun save(user : UserForm, token : String){
+    override fun save(user : UserForm, token : String):User{
         val newUser = User()
 
         newUser.email = user.email
@@ -31,7 +31,7 @@ class UserServiceImpl : UserService{
         newUser.loginToken =  token.replace("Bearer ", "")
 
         newUser.password=bCryptPasswordEncoder.encode(newUser.password)
-        userRepository.save(newUser)
+        return userRepository.save(newUser)
     }
 
     override fun saveNoCrypt(user: User){

@@ -9,6 +9,6 @@ import java.util.*
 interface SongService {
     fun findAll():List<Song>
     fun findByCode(code : UUID) : Optional<Song>
-    fun save(songForm: SongForm, genre: Genre, musicians: Set<Musician>)
+    fun save(songForm: SongForm, genre: Genre, musicians: Set<Musician>):Song
     fun save(song : Song)
 }

@@ -43,7 +43,6 @@ class UserTest : BaseTest() {
         testUser.email = "test@test.com"
         testUser.password = "test"
         val userJson = mapToJson(testUser);
-
         val user: User = User();
         user.email = testUser.email
         user.password = testUser.password

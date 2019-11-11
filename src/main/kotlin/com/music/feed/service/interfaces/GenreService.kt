@@ -7,7 +7,7 @@ import java.util.*
 
 interface GenreService {
     fun save(genre : Genre)
-    fun save(genreForm : GenreForm)
+    fun save(genreForm : GenreForm) : Genre
     fun findAll():List<Genre>
     fun findByName(name: String): Page<Genre>
     fun findByCode(code : UUID): Optional<Genre>
