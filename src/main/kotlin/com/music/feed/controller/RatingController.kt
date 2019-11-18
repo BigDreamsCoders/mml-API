@@ -2,6 +2,7 @@ package com.music.feed.controller
 
 import com.music.feed.form.LikeForm
 import com.music.feed.form.RateForm
+import com.music.feed.responses.GetResponse
 import com.music.feed.responses.RequestResponse
 import com.music.feed.service.RatingServiceImp
 import com.music.feed.service.SongServiceImp
@@ -99,5 +100,18 @@ class RatingController {
         }
 
         return ResponseEntity("The rating was successfully registered", HttpStatus.OK)
+    }
+
+    @GetMapping(value = ["/favorites"] )
+    @ResponseBody
+    fun getFavorites(request: HttpServletRequest) : ResponseEntity<Any>{
+        val user = userServiceImp.findByEmail(jwtTokenUtil.getEmailFromToken(request))
+
+        if(!user.isPresent){
+            return ResponseEntity(RequestResponse("User not found: Issue with JWT given, please verify or refresh it", 500), HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        val ratings = ratingServiceImp.findByUserAndLikedStatus(user.get(), 1)
+        val songs = ratings.map { it.song }
+        return ResponseEntity(GetResponse("Favorites songs found" , 200, songs ), HttpStatus.OK)
     }
 }

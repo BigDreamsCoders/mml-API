@@ -54,6 +54,10 @@ class UserServiceImpl : UserService{
         return userRepository.findByLoginToken(token)
     }
 
+    fun findAllFavoritiesByEmail(){
+
+    }
+
     fun validateUser(email: String, password : String) : Optional<User>{
         val user = userRepository.findByEmail(email)
         if(user.isPresent &&
