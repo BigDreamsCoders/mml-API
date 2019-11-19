@@ -38,7 +38,7 @@ class GenreController{
             return ResponseEntity(errors.get(), HttpStatus.UNPROCESSABLE_ENTITY)
         }
         genreServiceImp.save(genreForm)
-        return ResponseEntity(RequestResponse("Genre created", 401), HttpStatus.CREATED)
+        return ResponseEntity(RequestResponse("Genre created", 201), HttpStatus.CREATED)
     }
 
     @DeleteMapping(value = ["/{code}"])

@@ -13,7 +13,8 @@ class RatingTest : BaseTest(){
         val uri = "rating/favorites"
 
         val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.get(base + uri)
-                .accept(MediaType.APPLICATION_JSON)).andReturn()
+                .header("Authorization", defaultToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn()
         val status = mvcResult.response.status
         val content = mvcResult.response.contentAsString
         Assert.assertEquals(200, status)

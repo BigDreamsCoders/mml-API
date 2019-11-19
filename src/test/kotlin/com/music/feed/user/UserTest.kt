@@ -24,12 +24,13 @@ class UserTest : BaseTest() {
     fun registerUser() {
         testUser.email = "test@test.com"
         testUser.password = "test"
-        val userJson = mapToJson(testUser);
+        val userJson = mapToJson(testUser)
 
         val uri = "user/registration"
         val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.post(base + uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_UTF8).content(userJson)).andReturn()
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(userJson)).andReturn()
         val status = mvcResult.response.status
         val content = mvcResult.response.contentAsString
 
@@ -42,9 +43,9 @@ class UserTest : BaseTest() {
     fun loginUser() {
         testUser.email = "test@test.com"
         testUser.password = "test"
-        val userJson = mapToJson(testUser);
+        val userJson = mapToJson(testUser)
 
-        val user: User = User();
+        val user = User()
         user.email = testUser.email
         user.password = testUser.password
         userService.save(user)
@@ -52,7 +53,7 @@ class UserTest : BaseTest() {
         val uri = "user/login"
         val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.post(base + uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_UTF8).content(userJson)).andReturn()
+                .contentType(APPLICATION_JSON_UTF8).content(userJson)).andReturn()
         val status = mvcResult.response.status
         val content = mvcResult.response.contentAsString
 
