@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.util.*
+import kotlin.collections.ArrayList
 
 @Service
 class GenreServiceImp : GenreService{
@@ -30,19 +31,35 @@ class GenreServiceImp : GenreService{
         return genreRepository.findAll().toList()
     }
 
-    override fun findByName(name: String): Page<Genre> {
-        val page:Pageable = PageRequest.of(0,5)
-        return genreRepository.findByName(name, page);
+    override fun findByName(name: String): Optional<Genre> {
+        return genreRepository.findByName(name)
     }
 
-    override fun findByNameIsLike(name: String): Page<Genre> {
-        val page:Pageable = PageRequest.of(0,5)
-        return genreRepository.findByNameIsLike(name, page)
+    override fun findByNameIsLike(name: String): List<Genre> {
+        return genreRepository.findByNameContains(name)
     }
 
-    override fun findByNameIsLikeAndPhrasesAndNameIsLike(name: String): Page<Genre> {
-        val page:Pageable = PageRequest.of(0,5)
-        return genreRepository.findAllMatches(name, page)
+    override fun findByNameIsLikeAndPhrasesAndNameIsLike(name: String): List<Genre> {
+        val genres = genreRepository.findAll().toList()
+        //g.name.contains(minified)
+        val regex = Regex("(.*)$name(.*)")
+        val found :  MutableList<Genre> = ArrayList()
+        for(g in genres){
+            if(g.name.matches(regex) ){
+                found.add(g)
+                continue
+            }
+            else{
+                for(phrase in g.keywords){
+                    if(phrase.matches(regex)){
+                        found.add(g)
+                        break
+                    }
+                }
+            }
+
+        }
+        return found.toList()
     }
 
     override fun findByCode(code: UUID): Optional<Genre> {

@@ -9,9 +9,9 @@ interface GenreService {
     fun save(genre : Genre)
     fun save(genreForm : GenreForm)
     fun findAll():List<Genre>
-    fun findByName(name: String): Page<Genre>
+    fun findByName(name: String): Optional<Genre>
     fun findByCode(code : UUID): Optional<Genre>
-    fun findByNameIsLike(name: String) : Page<Genre>
-    fun findByNameIsLikeAndPhrasesAndNameIsLike(name : String) : Page<Genre>
+    fun findByNameIsLike(name: String) : List<Genre>
+    fun findByNameIsLikeAndPhrasesAndNameIsLike(name : String) : List<Genre>
     fun delete(genre: Genre)
 }
