@@ -77,7 +77,7 @@ class RatingTest : BaseTest() {
 
         val uri = "rating/song"
         var mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.post(base + uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE).header("Authorization","Bearer "+token)
+                .accept(MediaType.APPLICATION_JSON_VALUE).header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(rateJson)).andReturn()
         var status = mvcResult.response.status
         var content = mvcResult.response.contentAsString
@@ -86,13 +86,13 @@ class RatingTest : BaseTest() {
         Assert.assertEquals(200, status)
         Assert.assertNotNull(content)
         Assert.assertEquals(1, song.rated)
-        Assert.assertEquals(BigDecimal(5),song.rating)
+        Assert.assertEquals(BigDecimal(5), song.rating)
 
         rateForm.value = 1
         rateJson = mapToJson(rateForm)
 
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(base + uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE).header("Authorization","Bearer "+token)
+                .accept(MediaType.APPLICATION_JSON_VALUE).header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(rateJson)).andReturn()
         status = mvcResult.response.status
         content = mvcResult.response.contentAsString
@@ -101,13 +101,13 @@ class RatingTest : BaseTest() {
         Assert.assertEquals(200, status)
         Assert.assertNotNull(content)
         Assert.assertEquals(1, song.rated)
-        Assert.assertEquals(BigDecimal(1),song.rating)
+        Assert.assertEquals(BigDecimal(1), song.rating)
 
         rateForm.value = 3
         rateJson = mapToJson(rateForm)
 
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(base + uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE).header("Authorization","Bearer "+token2)
+                .accept(MediaType.APPLICATION_JSON_VALUE).header("Authorization", "Bearer " + token2)
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(rateJson)).andReturn()
         status = mvcResult.response.status
         content = mvcResult.response.contentAsString
@@ -116,6 +116,19 @@ class RatingTest : BaseTest() {
         Assert.assertEquals(200, status)
         Assert.assertNotNull(content)
         Assert.assertEquals(2, song.rated)
-        Assert.assertEquals(BigDecimal(2),song.rating)
+        Assert.assertEquals(BigDecimal(2), song.rating)
+    }
+
+    @Test
+    fun getAllFavorites() {
+        val uri = "rating/favorites"
+
+        val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.get(base + uri)
+                .header("Authorization", defaultToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn()
+        val status = mvcResult.response.status
+        val content = mvcResult.response.contentAsString
+        Assert.assertEquals(200, status)
+        Assert.assertNotNull(content)
     }
 }

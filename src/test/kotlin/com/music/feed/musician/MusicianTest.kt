@@ -10,10 +10,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 class MusicianTest : BaseTest() {
 
     @Test
-    fun getMusicians() {
+    fun getAllMusicians(){
         val uri = "musician/all"
         val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.get(base + uri)
-                .accept(MediaType.APPLICATION_JSON)).andReturn()
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn()
         val status = mvcResult.response.status
         val content = mvcResult.response.contentAsString
         Assert.assertEquals(200, status)
