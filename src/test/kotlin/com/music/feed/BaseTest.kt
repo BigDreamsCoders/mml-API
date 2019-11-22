@@ -29,7 +29,7 @@ abstract class BaseTest {
 
     @Before
     fun setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build()
     }
 
     @Throws(JsonProcessingException::class)

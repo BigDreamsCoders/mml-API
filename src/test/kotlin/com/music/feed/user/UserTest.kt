@@ -24,7 +24,7 @@ class UserTest : BaseTest() {
     fun registerUser() {
         testUser.email = "test@test.com"
         testUser.password = "test"
-        val userJson = mapToJson(testUser);
+        val userJson = mapToJson(testUser)
 
         val uri = "user/registration"
         val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.post(base + uri)
@@ -42,9 +42,9 @@ class UserTest : BaseTest() {
     fun loginUser() {
         testUser.email = "test@test.com"
         testUser.password = "test"
-        val userJson = mapToJson(testUser);
+        val userJson = mapToJson(testUser)
 
-        val user: User = User();
+        val user = User()
         user.email = testUser.email
         user.password = testUser.password
         userService.save(user)
