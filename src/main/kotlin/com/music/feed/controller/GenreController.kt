@@ -60,7 +60,7 @@ class GenreController{
         when (type) {
             "1" -> {
                 val genre = genreServiceImp.findByName(name)
-                if(genre.isEmpty)
+                if(!genre.isPresent)
                     return ResponseEntity(RequestResponse("No genre found with that name", 500), HttpStatus.INTERNAL_SERVER_ERROR)
                 return ResponseEntity(GetResponse("Genre found", 200, genre.get()), HttpStatus.OK)
             }
