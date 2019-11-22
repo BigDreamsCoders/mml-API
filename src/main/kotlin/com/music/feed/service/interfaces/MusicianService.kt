@@ -12,5 +12,5 @@ interface MusicianService {
     fun findAll():List<Musician>
     fun findByCode(code : UUID) : Optional<Musician>
     fun findAllByCodes(codes : List<String>) : Set<Musician>
-    fun save(musicianForm: MusicianForm, genre: Genre )
+    fun save(musicianForm: MusicianForm, genre: Genre ) : Musician
 }

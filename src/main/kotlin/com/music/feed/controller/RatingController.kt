@@ -2,6 +2,7 @@ package com.music.feed.controller
 
 import com.music.feed.form.LikeForm
 import com.music.feed.form.RateForm
+import com.music.feed.responses.GetResponse
 import com.music.feed.responses.RequestResponse
 import com.music.feed.service.RatingServiceImp
 import com.music.feed.service.SongServiceImp
@@ -58,15 +59,17 @@ class RatingController {
         if(rating.isPresent){
             val ratingBefore = rating.get().value/song.get().rated
             val ratingNow = rateForm.value/song.get().rated
-            song.get().rating.subtract(BigDecimal(ratingBefore)).add(BigDecimal(ratingNow))
+            song.get().rating = song.get().rating.subtract(BigDecimal(ratingBefore)).add(BigDecimal(ratingNow))
             ratingServiceImp.save(rating.get(), rateForm)
             songServiceImp.save(song.get())
         }
         else{
             val y = song.get().rating.multiply(BigDecimal(song.get().rated))
-            val rated = song.get().rated++
-            val total = y.divide(BigDecimal(rated)).add(BigDecimal(rateForm.value/rated))
+            val rated = song.get().rated + 1
+            //val total = y.divide(BigDecimal(rated)).add(BigDecimal(rateForm.value/rated))
+            val total = y.add(BigDecimal(rateForm.value)).divide(BigDecimal(rated))
             song.get().rating = total
+            song.get().rated = rated
             ratingServiceImp.save(user.get(),song.get(), rateForm)
             songServiceImp.save(song.get())
         }
@@ -99,5 +102,18 @@ class RatingController {
         }
 
         return ResponseEntity("The rating was successfully registered", HttpStatus.OK)
+    }
+
+    @GetMapping(value = ["/favorites"] )
+    @ResponseBody
+    fun getFavorites(request: HttpServletRequest) : ResponseEntity<Any>{
+        val user = userServiceImp.findByEmail(jwtTokenUtil.getEmailFromToken(request))
+
+        if(!user.isPresent){
+            return ResponseEntity(RequestResponse("User not found: Issue with JWT given, please verify or refresh it", 500), HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+        val ratings = ratingServiceImp.findByUserAndLikedStatus(user.get(), 1)
+        val songs = ratings.map { it.song }
+        return ResponseEntity(GetResponse("Favorites songs found" , 200, songs ), HttpStatus.OK)
     }
 }

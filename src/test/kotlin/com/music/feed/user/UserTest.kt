@@ -29,7 +29,8 @@ class UserTest : BaseTest() {
         val uri = "user/registration"
         val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.post(base + uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_UTF8).content(userJson)).andReturn()
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(userJson)).andReturn()
         val status = mvcResult.response.status
         val content = mvcResult.response.contentAsString
 
@@ -52,7 +53,7 @@ class UserTest : BaseTest() {
         val uri = "user/login"
         val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.post(base + uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_UTF8).content(userJson)).andReturn()
+                .contentType(APPLICATION_JSON_UTF8).content(userJson)).andReturn()
         val status = mvcResult.response.status
         val content = mvcResult.response.contentAsString
 
