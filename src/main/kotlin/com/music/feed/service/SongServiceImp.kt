@@ -32,4 +32,7 @@ class SongServiceImp : SongService{
         return songRepository.findAll().toList()
     }
 
+    override fun findAllByOrderByRatedDesc(): Set<Song> {
+        return songRepository.findAllByOrderByRatedDesc()
+    }
 }

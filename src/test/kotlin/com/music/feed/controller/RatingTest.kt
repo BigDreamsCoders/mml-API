@@ -1,10 +1,9 @@
-package com.music.feed.rating
+package com.music.feed.controller
 
 import com.music.feed.BaseTest
 import com.music.feed.domain.Genre
 import com.music.feed.domain.Musician
 import com.music.feed.domain.Song
-import com.music.feed.domain.auth.User
 import com.music.feed.form.*
 import com.music.feed.service.auth.interfaces.UserService
 import com.music.feed.service.interfaces.GenreService
@@ -61,12 +60,12 @@ class RatingTest : BaseTest() {
         userForm.email = "test@test.com"
         userForm.password = "test"
         token = jwtTokenUtil.getJWTToken(userForm.email)
-        val user: User = userService.save(userForm, token)
+        userService.save(userForm, token)
 
         userForm.email = "test2@test.com"
         userForm.password = "test"
         token2 = jwtTokenUtil.getJWTToken(userForm.email)
-        val user2: User = userService.save(userForm, token)
+        userService.save(userForm, token)
     }
 
     @Test
@@ -81,7 +80,7 @@ class RatingTest : BaseTest() {
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(rateJson)).andReturn()
         var status = mvcResult.response.status
         var content = mvcResult.response.contentAsString
-        song = songService.findByCode(UUID.fromString(rateForm.code)).get();
+        song = songService.findByCode(UUID.fromString(rateForm.code)).get()
 
         Assert.assertEquals(200, status)
         Assert.assertNotNull(content)
@@ -96,7 +95,7 @@ class RatingTest : BaseTest() {
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(rateJson)).andReturn()
         status = mvcResult.response.status
         content = mvcResult.response.contentAsString
-        song = songService.findByCode(UUID.fromString(rateForm.code)).get();
+        song = songService.findByCode(UUID.fromString(rateForm.code)).get()
 
         Assert.assertEquals(200, status)
         Assert.assertNotNull(content)
@@ -111,7 +110,7 @@ class RatingTest : BaseTest() {
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(rateJson)).andReturn()
         status = mvcResult.response.status
         content = mvcResult.response.contentAsString
-        song = songService.findByCode(UUID.fromString(rateForm.code)).get();
+        song = songService.findByCode(UUID.fromString(rateForm.code)).get()
 
         Assert.assertEquals(200, status)
         Assert.assertNotNull(content)
@@ -124,7 +123,7 @@ class RatingTest : BaseTest() {
         val uri = "rating/favorites"
 
         val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.get(base + uri)
-                .header("Authorization", defaultToken)
+                .header("Authorization", "Bearer "+token)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn()
         val status = mvcResult.response.status
         val content = mvcResult.response.contentAsString

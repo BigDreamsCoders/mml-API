@@ -26,13 +26,13 @@ class RatingController {
     lateinit var errorValidator: ErrorValidator
 
     @Autowired
-    lateinit var ratingServiceImp: RatingServiceImp
+    lateinit var ratingService: RatingServiceImp
 
     @Autowired
-    lateinit var userServiceImp: UserServiceImpl
+    lateinit var userService: UserServiceImpl
 
     @Autowired
-    lateinit var songServiceImp: SongServiceImp
+    lateinit var songService: SongServiceImp
 
     @Autowired
     lateinit var jwtTokenUtil: JwtTokenUtil
@@ -46,8 +46,8 @@ class RatingController {
         if(errors.isPresent){
             return ResponseEntity(errors.get(), HttpStatus.UNPROCESSABLE_ENTITY)
         }
-        val user = userServiceImp.findByEmail(jwtTokenUtil.getEmailFromToken(request))
-        val song = songServiceImp.findByCode(UUID.fromString(rateForm.code))
+        val user = userService.findByEmail(jwtTokenUtil.getEmailFromToken(request))
+        val song = songService.findByCode(UUID.fromString(rateForm.code))
 
         if(!user.isPresent){
             return ResponseEntity(RequestResponse("User not found: Issue with JWT given, please verify or refresh it", 500), HttpStatus.INTERNAL_SERVER_ERROR)
@@ -55,13 +55,13 @@ class RatingController {
         else if(!song.isPresent){
             return ResponseEntity(RequestResponse("Song code non existent", 500), HttpStatus.INTERNAL_SERVER_ERROR)
         }
-        val rating = ratingServiceImp.findByUserAndSong(user.get(), song.get())
+        val rating = ratingService.findByUserAndSong(user.get(), song.get())
         if(rating.isPresent){
             val ratingBefore = rating.get().value/song.get().rated
             val ratingNow = rateForm.value/song.get().rated
             song.get().rating = song.get().rating.subtract(BigDecimal(ratingBefore)).add(BigDecimal(ratingNow))
-            ratingServiceImp.save(rating.get(), rateForm)
-            songServiceImp.save(song.get())
+            ratingService.save(rating.get(), rateForm)
+            songService.save(song.get())
         }
         else{
             val y = song.get().rating.multiply(BigDecimal(song.get().rated))
@@ -70,8 +70,8 @@ class RatingController {
             val total = y.add(BigDecimal(rateForm.value)).divide(BigDecimal(rated))
             song.get().rating = total
             song.get().rated = rated
-            ratingServiceImp.save(user.get(),song.get(), rateForm)
-            songServiceImp.save(song.get())
+            ratingService.save(user.get(),song.get(), rateForm)
+            songService.save(song.get())
         }
 
         return ResponseEntity("The rating was successfully registered", HttpStatus.OK)
@@ -84,8 +84,8 @@ class RatingController {
         if(errors.isPresent){
             return ResponseEntity(errors.get(), HttpStatus.UNPROCESSABLE_ENTITY)
         }
-        val user = userServiceImp.findByEmail(jwtTokenUtil.getEmailFromToken(request))
-        val song = songServiceImp.findByCode(UUID.fromString(likeForm.code))
+        val user = userService.findByEmail(jwtTokenUtil.getEmailFromToken(request))
+        val song = songService.findByCode(UUID.fromString(likeForm.code))
 
         if(!user.isPresent){
             return ResponseEntity(RequestResponse("User not found: Issue with JWT given, please verify or refresh it", 500), HttpStatus.INTERNAL_SERVER_ERROR)
@@ -93,12 +93,12 @@ class RatingController {
         else if(!song.isPresent){
             return ResponseEntity(RequestResponse("Song code non existent", 500), HttpStatus.INTERNAL_SERVER_ERROR)
         }
-        val rating = ratingServiceImp.findByUserAndSong(user.get(), song.get())
+        val rating = ratingService.findByUserAndSong(user.get(), song.get())
         if(rating.isPresent){
-            ratingServiceImp.save(rating.get(), likeForm)
+            ratingService.save(rating.get(), likeForm)
         }
         else{
-            ratingServiceImp.save(user.get(),song.get(), likeForm)
+            ratingService.save(user.get(),song.get(), likeForm)
         }
 
         return ResponseEntity("The rating was successfully registered", HttpStatus.OK)
@@ -107,12 +107,12 @@ class RatingController {
     @GetMapping(value = ["/favorites"] )
     @ResponseBody
     fun getFavorites(request: HttpServletRequest) : ResponseEntity<Any>{
-        val user = userServiceImp.findByEmail(jwtTokenUtil.getEmailFromToken(request))
+        val user = userService.findByEmail(jwtTokenUtil.getEmailFromToken(request))
 
         if(!user.isPresent){
             return ResponseEntity(RequestResponse("User not found: Issue with JWT given, please verify or refresh it", 500), HttpStatus.INTERNAL_SERVER_ERROR)
         }
-        val ratings = ratingServiceImp.findByUserAndLikedStatus(user.get(), 1)
+        val ratings = ratingService.findByUserAndLikedStatus(user.get(), 1)
         val songs = ratings.map { it.song }
         return ResponseEntity(GetResponse("Favorites songs found" , 200, songs ), HttpStatus.OK)
     }

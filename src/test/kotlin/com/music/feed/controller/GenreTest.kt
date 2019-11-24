@@ -1,4 +1,4 @@
-package com.music.feed.genre
+package com.music.feed.controller
 
 import com.music.feed.BaseTest
 import com.music.feed.form.GenreForm

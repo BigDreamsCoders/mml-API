@@ -1,4 +1,4 @@
-package com.music.feed.user
+package com.music.feed.controller
 
 import com.music.feed.BaseTest
 import com.music.feed.domain.auth.User

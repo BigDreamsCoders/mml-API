@@ -20,7 +20,6 @@ import javax.transaction.Transactional
 import com.fasterxml.jackson.databind.SerializationFeature
 
 
-
 @RunWith(SpringRunner::class)
 @SpringBootTest(classes = [MmlApplication::class])
 @Transactional
@@ -32,7 +31,6 @@ abstract class BaseTest {
     @Autowired
     lateinit var webApplicationContext : WebApplicationContext
 
-    protected val defaultToken : String = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJzb2Z0dGVrSldUIiwic3ViIjoidGVzdEB1Y2EuZWR1LnN2IiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTU3NDE5MjQ4MywiZXhwIjoxNTc0Nzk3MjgzfQ.yj7RmN6ayyFKloWibBXUloLnhP4aycWH4JKDo2NmhWnmgyOHQaYcQrdb5sIEAi3fcQgUFF9JO-MzL6aKsboWaw"
     protected val APPLICATION_JSON_UTF8 = MediaType(MediaType.APPLICATION_JSON.type, MediaType.APPLICATION_JSON.subtype, Charset.forName("utf8"))
 
 
@@ -52,5 +50,7 @@ abstract class BaseTest {
         val objectMapper = ObjectMapper()
         return objectMapper.readValue(json, clazz)
     }
+
+
 
 }
