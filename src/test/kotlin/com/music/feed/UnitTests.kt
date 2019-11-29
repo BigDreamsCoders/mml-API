@@ -1,10 +1,6 @@
 package com.music.feed
 
-import com.music.feed.controller.GenreTest
-import com.music.feed.controller.MusicianTest
-import com.music.feed.controller.RatingTest
-import com.music.feed.controller.SongTest
-import com.music.feed.controller.UserTest
+import com.music.feed.controller.*
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
@@ -14,7 +10,8 @@ import org.junit.runners.Suite
         GenreTest::class,
         SongTest::class,
         MusicianTest::class,
-        RatingTest::class
+        RatingTest::class,
+        FavoriteTest::class
 )
 class UnitTests {
 
