@@ -43,6 +43,7 @@ class FavoriteTest : BaseTest() {
 
     private var token:String = String()
     private var song: Song = Song()
+    private var song2: Song = Song()
     private var user: User = User()
 
     @Before
@@ -58,6 +59,10 @@ class FavoriteTest : BaseTest() {
         val songForm = SongForm()
         songForm.title = "Song"
         song = songService.save(songForm, genre, mutableSetOf(musician))
+
+        val songForm2 = SongForm()
+        songForm2.title = "Song 2"
+        song2 = songService.save(songForm, genre, mutableSetOf(musician))
 
         val userForm = UserForm()
         userForm.email = "test@test.com"
@@ -80,21 +85,11 @@ class FavoriteTest : BaseTest() {
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(favoriteJson)).andReturn()
         var status = mvcResult.response.status
         var content = mvcResult.response.contentAsString
-
-        Assert.assertEquals(200, status)
-        Assert.assertNotNull(content)
-
-        uri = "rating/favorites"
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(base + uri)
-                .header("Authorization", "Bearer "+token)
-                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn()
-        status = mvcResult.response.status
-        content = mvcResult.response.contentAsString
         var rating = ratingService.findByUserAndSong(user, song);
 
-        Assert.assertEquals(200, status)
         Assert.assertNotNull(rating)
         Assert.assertEquals(rating.get().likedStatus, 0)
+        Assert.assertEquals(200, status)
         Assert.assertNotNull(content)
 
         uri = "rating/song/like"
@@ -107,8 +102,11 @@ class FavoriteTest : BaseTest() {
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(favoriteJson)).andReturn()
         status = mvcResult.response.status
         content = mvcResult.response.contentAsString
+        rating = ratingService.findByUserAndSong(user, song);
 
         Assert.assertEquals(200, status)
+        Assert.assertNotNull(rating)
+        Assert.assertEquals(rating.get().likedStatus, 1)
         Assert.assertNotNull(content)
 
         uri = "rating/favorites"
@@ -117,11 +115,21 @@ class FavoriteTest : BaseTest() {
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn()
         status = mvcResult.response.status
         content = mvcResult.response.contentAsString
-        rating = ratingService.findByUserAndSong(user, song);
 
         Assert.assertEquals(200, status)
-        Assert.assertNotNull(rating)
-        Assert.assertEquals(rating.get().likedStatus, 1)
+        Assert.assertNotNull(content)
+    }
+
+    @Test
+    fun getFavorites(){
+        var uri = "rating/favorites"
+        var mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(base + uri)
+                .header("Authorization", "Bearer "+token)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn()
+        var status = mvcResult.response.status
+        var content = mvcResult.response.contentAsString
+
+        Assert.assertEquals(200, status)
         Assert.assertNotNull(content)
     }
 }
