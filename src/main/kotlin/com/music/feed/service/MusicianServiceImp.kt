@@ -2,6 +2,7 @@ package com.music.feed.service
 
 import com.music.feed.domain.Genre
 import com.music.feed.domain.Musician
+import com.music.feed.domain.Song
 import com.music.feed.form.MusicianForm
 import com.music.feed.form.SongForm
 import com.music.feed.repository.MusicianRepository
@@ -15,8 +16,6 @@ import kotlin.collections.HashMap
 
 @Service
 class MusicianServiceImp : MusicianService {
-
-
     @Autowired
     lateinit var musicianRepository: MusicianRepository
 
@@ -24,9 +23,20 @@ class MusicianServiceImp : MusicianService {
         return musicianRepository.findByCode(code)
     }
 
-    override fun save(musicianForm: MusicianForm, genre: Genre ) {
-        val musician = Musician(musicianForm, genre)
+    override fun save(musician: Musician) {
         musicianRepository.save(musician)
+    }
+
+    override fun save(musicians  : Set<Musician>, song: Song){
+        musicians.forEach {
+            it.songs.add(song)
+            musicianRepository.save(it)
+        }
+    }
+
+    override fun save(musicianForm: MusicianForm, genre: Genre ):Musician {
+        val musician = Musician(musicianForm, genre)
+        return musicianRepository.save(musician)
     }
 
     override fun findAllByCodes(codes : List<String>) : Set<Musician>{

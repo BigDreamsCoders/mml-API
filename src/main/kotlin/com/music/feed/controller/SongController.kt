@@ -1,7 +1,6 @@
 package com.music.feed.controller
 
 import com.music.feed.domain.Song
-import com.music.feed.form.GenreForm
 import com.music.feed.form.SongForm
 import com.music.feed.responses.GetResponse
 import com.music.feed.responses.RequestResponse
@@ -24,26 +23,32 @@ class SongController {
     lateinit var errorValidator: ErrorValidator
 
     @Autowired
-    lateinit var songServiceImp: SongServiceImp
+    lateinit var songService: SongServiceImp
 
     @Autowired
-    lateinit var musicianServiceImp: MusicianServiceImp
+    lateinit var musicianService: MusicianServiceImp
 
     @Autowired
-    lateinit var genreServiceImp : GenreServiceImp
+    lateinit var genreService : GenreServiceImp
 
 
     @GetMapping(value=["/all"])
     @ResponseBody
-    fun getGenres():List<Song>{
-        return songServiceImp.findAll()
+    fun getSongs():List<Song>{
+        return songService.findAll()
+    }
+
+    @GetMapping(value = ["/best"])
+    @ResponseBody
+    fun getSongsBestRated():List<Song>{
+        return songService.findAllByOrderByRatedDesc().toList()
     }
 
 
     @GetMapping(value = ["/{code}"])
     @ResponseBody
     fun getSong(@PathVariable(name ="code") code : UUID) : ResponseEntity<Any> {
-        val song = songServiceImp.findByCode(code)
+        val song = songService.findByCode(code)
         if(!song.isPresent){
             return ResponseEntity(RequestResponse("No song found matching that ID", 500), HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -57,12 +62,12 @@ class SongController {
         if(errors.isPresent){
             return ResponseEntity(errors.get(), HttpStatus.UNPROCESSABLE_ENTITY)
         }
-        val genre = genreServiceImp.findByCode(UUID.fromString(songForm.genre))
+        val genre = genreService.findByCode(UUID.fromString(songForm.genre))
         if(genre.isPresent){
-            val musicians = musicianServiceImp.findAllByCodes(songForm.musicians)
+            val musicians = musicianService.findAllByCodes(songForm.musicians)
             if(musicians.isNotEmpty()){
-                songServiceImp.save(songForm, genre.get(), musicians)
-                return ResponseEntity(RequestResponse("Song created" , 200), HttpStatus.OK)
+                songService.save(songForm, genre.get(), musicians)
+                return ResponseEntity(RequestResponse("Song created" , 201), HttpStatus.CREATED)
             }
             return ResponseEntity(RequestResponse("Issue with musicians list" , 500), HttpStatus.INTERNAL_SERVER_ERROR)
         }
