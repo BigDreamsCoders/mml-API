@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.util.stream.Collectors
+import javax.servlet.http.HttpServletRequest
 
 import javax.validation.Valid
 
@@ -93,6 +94,8 @@ class UserController{
         return ResponseEntity(RequestResponse("No such user registered by that email", 500),
         HttpStatus.OK)
     }
+
+
 
 
     /*

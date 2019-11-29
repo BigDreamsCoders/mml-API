@@ -37,7 +37,6 @@ class MusicianController {
         return musicianServiceImp.findAll()
     }
 
-
     @GetMapping(value =["/{code}"])
     @ResponseBody
     fun selectMusician(@PathVariable(name = "code") code : UUID) : ResponseEntity<Any> {
@@ -58,7 +57,7 @@ class MusicianController {
         val genre = genreServiceImp.findByCode(UUID.fromString(musicianForm.genre))
         if(genre.isPresent){
             musicianServiceImp.save(musicianForm, genre.get())
-            return ResponseEntity(RequestResponse("Musician created" , 200), HttpStatus.OK)
+            return ResponseEntity(RequestResponse("Musician created" , 201), HttpStatus.CREATED)
         }
         return ResponseEntity(RequestResponse("Error creating musician" , 500), HttpStatus.INTERNAL_SERVER_ERROR)
     }

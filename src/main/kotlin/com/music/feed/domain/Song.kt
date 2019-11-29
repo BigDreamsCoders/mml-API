@@ -47,10 +47,8 @@ data class Song(
         var genre : Genre ?= null,
 
         @ManyToMany(mappedBy = "songs")
-        var musicians : Set<Musician>  =  HashSet()
-
-
-        ){
+        var musicians : MutableSet<Musician>  =  HashSet())
+{
         constructor(songForm: SongForm, genre: Genre, musicians: Set<Musician>) : this() {
                 length = songForm.length
                 description = songForm.description
@@ -59,6 +57,6 @@ data class Song(
                 thumbNail = songForm.thumbNail
                 youtubeLink = songForm.youtubeLink
                 this.genre = genre
-                this.musicians = musicians
+                this.musicians.addAll(musicians)
         }
 }

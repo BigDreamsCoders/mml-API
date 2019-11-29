@@ -10,13 +10,13 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
-class GenreForm : Serializable  {
+data class GenreForm (
         @field:NotEmpty(message = "Ingrese un nombre de genero")
-        var name: String = ""
+        var name: String = "",
         @field:NotEmpty(message = "Ingrese un URL de imagen")
-        var url: String = ""
+        var url: String = "",
         @field:NotEmpty
         @field:NotBlankElements
         @field:NotNullElements
-        var keywords : List<String> = ArrayList()
+        var keywords : List<String> = ArrayList()): Serializable  {
 }

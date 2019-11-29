@@ -5,6 +5,6 @@ import org.springframework.boot.runApplication
 
 @SpringBootApplication
 class MmlApplication
-fun main(args: Array<String>) {
-    runApplication<MmlApplication>(*args)
-}
+    fun main(args: Array<String>) {
+        runApplication<MmlApplication>(*args)
+    }

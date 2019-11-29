@@ -8,6 +8,7 @@ import com.music.feed.form.RateForm
 import com.music.feed.repository.RatingRepository
 import com.music.feed.service.interfaces.RatingService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -36,8 +37,11 @@ class RatingServiceImp : RatingService {
         ratingRepository.save(rating)
     }
 
-
     override fun findByUserAndSong(user: User, song: Song): Optional<Rating> {
         return ratingRepository.findByUserAndSong(user,song)
+    }
+
+    override fun findByUserAndLikedStatus(user: User, likedStatus: Int): Set<Rating> {
+        return ratingRepository.findByUserAndLikedStatus(user, likedStatus)
     }
 }

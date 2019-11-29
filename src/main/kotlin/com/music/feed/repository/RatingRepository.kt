@@ -10,4 +10,5 @@ import java.util.*
 @Repository
 interface RatingRepository : CrudRepository<Rating, UUID> {
     fun findByUserAndSong (user: User, song: Song) : Optional<Rating>
+    fun findByUserAndLikedStatus(user: User, likedStatus: Int): Set<Rating>
 }

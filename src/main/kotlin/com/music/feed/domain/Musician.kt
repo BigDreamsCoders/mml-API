@@ -37,7 +37,7 @@ data class Musician(
                 joinColumns = [ JoinColumn(name = "m_code") ],
                 inverseJoinColumns = [JoinColumn(name = "s_code") ]
         )
-        var songs : Set<Song>  = HashSet()
+        var songs : MutableSet<Song>  = HashSet()
         ){
         constructor(musicianForm: MusicianForm, genre: Genre) : this(){
                 name = musicianForm.name

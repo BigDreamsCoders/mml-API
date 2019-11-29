@@ -13,8 +13,12 @@ import java.io.IOException
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.core.JsonProcessingException
 import org.junit.Before
+import org.springframework.http.MediaType
 import org.springframework.test.context.junit4.SpringRunner
+import java.nio.charset.Charset
 import javax.transaction.Transactional
+import com.fasterxml.jackson.databind.SerializationFeature
+
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(classes = [MmlApplication::class])
@@ -27,9 +31,12 @@ abstract class BaseTest {
     @Autowired
     lateinit var webApplicationContext : WebApplicationContext
 
+    protected val APPLICATION_JSON_UTF8 = MediaType(MediaType.APPLICATION_JSON.type, MediaType.APPLICATION_JSON.subtype, Charset.forName("utf8"))
+
+
     @Before
     fun setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build()
     }
 
     @Throws(JsonProcessingException::class)
@@ -43,4 +50,7 @@ abstract class BaseTest {
         val objectMapper = ObjectMapper()
         return objectMapper.readValue(json, clazz)
     }
+
+
+
 }
