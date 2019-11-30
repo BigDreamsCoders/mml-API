@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page
 import java.util.*
 
 interface GenreService {
-    fun save(genre : Genre)
+    fun save(genre : Genre) : Genre
     fun save(genreForm : GenreForm) : Genre
     fun findAll():List<Genre>
     fun findByName(name: String): Optional<Genre>

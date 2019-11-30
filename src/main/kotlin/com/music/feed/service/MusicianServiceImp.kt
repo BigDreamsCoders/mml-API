@@ -23,15 +23,8 @@ class MusicianServiceImp : MusicianService {
         return musicianRepository.findByCode(code)
     }
 
-    override fun save(musician: Musician) {
-        musicianRepository.save(musician)
-    }
-
-    override fun save(musicians  : Set<Musician>, song: Song){
-        musicians.forEach {
-            it.songs.add(song)
-            musicianRepository.save(it)
-        }
+    override fun save(musician: Musician) : Musician {
+        return musicianRepository.save(musician)
     }
 
     override fun save(musicianForm: MusicianForm, genre: Genre ):Musician {

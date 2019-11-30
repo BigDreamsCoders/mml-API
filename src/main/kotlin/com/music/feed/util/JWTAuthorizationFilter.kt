@@ -28,7 +28,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
     private val SECRET = "mySecretKey"
 
     @Throws(ServletException::class, IOException::class)
-    override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
+    public override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
         try {
             if (existingJWTToken(request, response)) {
                 val claims = validateToken(request)
