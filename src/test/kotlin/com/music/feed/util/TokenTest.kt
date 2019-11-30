@@ -16,10 +16,6 @@ import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import java.util.function.Function
 import org.springframework.mock.web.MockFilterChain
-import com.sun.jmx.snmp.daemon.CommunicatorServer.ONLINE
-import org.junit.rules.ExpectedException
-import org.springframework.mock.web.MockFilterConfig
-import javax.servlet.FilterConfig
 import javax.servlet.FilterChain
 import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.http.HttpHeaders
