@@ -10,8 +10,7 @@ import java.awt.print.Pageable
 import java.util.*
 
 interface MusicianService {
-    fun save(musician :Musician)
-    fun save(musicians: Set<Musician>, song: Song)
+    fun save(musician: Musician) : Musician
     fun save(musicianForm: MusicianForm, genre: Genre ) : Musician
     fun findAll():List<Musician>
     fun findByCode(code : UUID) : Optional<Musician>

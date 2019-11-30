@@ -18,8 +18,8 @@ class GenreServiceImp : GenreService{
     lateinit var genreRepository: GenreRepository
 
 
-    override fun save(genre : Genre){
-        genreRepository.save(genre)
+    override fun save(genre : Genre) : Genre{
+        return genreRepository.save(genre)
     }
 
     override fun save(genreForm : GenreForm): Genre{

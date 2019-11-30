@@ -2,7 +2,6 @@ package com.music.feed.form
 
 import com.music.feed.annotation.NotBlankElements
 import com.music.feed.annotation.NotNullElements
-import com.music.feed.form.section.PhraseSection
 import java.io.Serializable
 import java.util.ArrayList
 import javax.validation.Valid
