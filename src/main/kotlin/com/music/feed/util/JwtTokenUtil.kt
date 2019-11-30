@@ -37,7 +37,7 @@ class JwtTokenUtil : Serializable {
     }
 
     private fun getAllClaimsFromToken(token: String): Claims {
-        return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).body
+        return Jwts.parser().setSigningKey(SECRET.toByteArray()).parseClaimsJws(token).body
     }
 
      fun getJWTToken(username: String): String {
@@ -47,7 +47,6 @@ class JwtTokenUtil : Serializable {
          c.add(Calendar.DATE, 7)
          dt = c.time
 
-        val secretKey = SECRET
         val grantedAuthorities = AuthorityUtils
                 .commaSeparatedStringToAuthorityList("ROLE_USER")
 
@@ -62,7 +61,7 @@ class JwtTokenUtil : Serializable {
                 .setIssuedAt(Date(System.currentTimeMillis()))
                 .setExpiration(dt)
                 .signWith(SignatureAlgorithm.HS512,
-                        secretKey.toByteArray()).compact()
+                        SECRET.toByteArray()).compact()
 
         return "Bearer $token"
     }
