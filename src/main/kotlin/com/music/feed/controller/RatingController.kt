@@ -55,23 +55,27 @@ class RatingController {
         else if(!song.isPresent){
             return ResponseEntity(RequestResponse("Song code non existent", 500), HttpStatus.INTERNAL_SERVER_ERROR)
         }
-        val rating = ratingService.findByUserAndSong(user.get(), song.get())
+        val cSong = song.get()
+        val rating = ratingService.findByUserAndSong(user.get(), cSong)
         if(rating.isPresent){
-            val ratingBefore = rating.get().value/song.get().rated
-            val ratingNow = rateForm.value/song.get().rated
-            song.get().rating = song.get().rating.subtract(BigDecimal(ratingBefore)).add(BigDecimal(ratingNow))
+            val ratingBefore : Double = rating.get().value.toDouble()*cSong.rated
+            val ratingNow : Double = rateForm.value.toDouble()*cSong.rated
+            val currentRating = cSong.rating.toDouble() * cSong.rated
+            cSong.rating = BigDecimal(currentRating-ratingBefore+ratingNow)
+                    .divide(BigDecimal(cSong.rated))
+            rating.get().value = rateForm.value
             ratingService.save(rating.get(), rateForm)
-            songService.save(song.get())
         }
         else{
-            val y = song.get().rating.multiply(BigDecimal(song.get().rated))
-            val rated = song.get().rated + 1
-            //val total = y.divide(BigDecimal(rated)).add(BigDecimal(rateForm.value/rated))
-            val total = y.add(BigDecimal(rateForm.value)).divide(BigDecimal(rated))
-            song.get().rating = total
-            song.get().rated = rated
-            ratingService.save(user.get(),song.get(), rateForm)
-            songService.save(song.get())
+            val currentRate = cSong.rating.multiply(BigDecimal(cSong.rated))
+            val rated = cSong.rated + 1
+            val total = currentRate.add(BigDecimal(rateForm.value)).divide(BigDecimal(rated))
+
+            cSong.rating = total
+            cSong.rated = rated
+
+            ratingService.save(user.get(),cSong, rateForm)
+            songService.save(cSong)
         }
 
         return ResponseEntity("The rating was successfully registered", HttpStatus.OK)
