@@ -11,19 +11,27 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import java.lang.Exception
 import org.springframework.beans.factory.annotation.Autowired
 import com.music.feed.service.auth.interfaces.UserService
+import com.music.feed.util.JwtTokenUtil
+import org.junit.Before
 
 class UserTest : BaseTest() {
 
     @Autowired
     private lateinit var userService: UserService
 
+    @Autowired
+    private lateinit var jwtTokenUtil: JwtTokenUtil
+
     private val testUser = UserForm()
 
-    @Test
-    @Throws(Exception::class)
-    fun registerUser() {
+    @Before
+    fun SetUp(){
         testUser.email = "test@test.com"
         testUser.password = "test"
+    }
+
+    @Test
+    fun registerUser() {
         val userJson = mapToJson(testUser)
 
         val uri = "user/registration"
@@ -41,8 +49,6 @@ class UserTest : BaseTest() {
     @Test
     @Throws(Exception::class)
     fun loginUser() {
-        testUser.email = "test@test.com"
-        testUser.password = "test"
         val userJson = mapToJson(testUser)
 
         val user = User()
@@ -61,14 +67,14 @@ class UserTest : BaseTest() {
         Assert.assertNotNull(content)
     }
 
-    /*@Test
-    @Throws(Exception::class)
+
+
+    @Test
     fun deleteUser() {
         testUser.email = "test@test.com"
-        //val uri = "user/?email=${testUser.email}"
-        val uri = "user/"
+        val uri = "user/${testUser.email}"
 
-        val user:User = User();
+        val user = User()
         user.email = testUser.email
         userService.save(user)
 
@@ -79,5 +85,5 @@ class UserTest : BaseTest() {
 
         Assert.assertEquals(200, status)
         Assert.assertNotNull(content)
-    }*/
+    }
 }

@@ -6,6 +6,7 @@ import com.music.feed.domain.Musician
 import com.music.feed.form.GenreForm
 import com.music.feed.form.MusicianForm
 import com.music.feed.service.GenreServiceImp
+import com.music.feed.service.MusicianServiceImp
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -18,6 +19,9 @@ class MusicianTest : BaseTest() {
 
     @Autowired
     lateinit var genreService: GenreServiceImp
+
+    @Autowired
+    lateinit var musicianService : MusicianServiceImp
 
     var genre : Genre = Genre()
 
@@ -33,6 +37,22 @@ class MusicianTest : BaseTest() {
     @Test
     fun getAllMusicians(){
         val uri = "musician/all"
+        val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.get(base + uri)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn()
+        val status = mvcResult.response.status
+        val content = mvcResult.response.contentAsString
+        Assert.assertEquals(200, status)
+        Assert.assertNotNull(content)
+    }
+
+    @Test
+    fun getMusician(){
+        val musician = Musician()
+        musician.genre = genre
+        val created = musicianService.save(musician)
+
+        val uri = "musician/${created.code}"
+
         val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.get(base + uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn()
         val status = mvcResult.response.status

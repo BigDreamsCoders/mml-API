@@ -1,9 +1,9 @@
-package com.music.feed.controller
+package com.music.feed.util
 
 import com.music.feed.BaseTest
+import com.music.feed.MmlApplication
 import com.music.feed.domain.Genre
 import com.music.feed.domain.Musician
-import com.music.feed.domain.Song
 import com.music.feed.form.GenreForm
 import com.music.feed.form.MusicianForm
 import com.music.feed.form.SongForm
@@ -12,11 +12,6 @@ import com.music.feed.service.GenreServiceImp
 import com.music.feed.service.MusicianServiceImp
 import com.music.feed.service.SongServiceImp
 import com.music.feed.service.auth.UserServiceImpl
-import com.music.feed.service.auth.interfaces.UserService
-import com.music.feed.service.interfaces.GenreService
-import com.music.feed.service.interfaces.MusicianService
-import com.music.feed.service.interfaces.SongService
-import com.music.feed.util.JwtTokenUtil
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -26,7 +21,8 @@ import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import java.util.*
 
-class SongTest : BaseTest() {
+
+class ValidatorTest : BaseTest(){
     @Autowired
     private lateinit var jwtTokenUtil: JwtTokenUtil
 
@@ -70,45 +66,43 @@ class SongTest : BaseTest() {
     }
 
     @Test
-    fun getAllSongs(){
-        val uri = "song/all"
-        val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.get(base + uri)
-                .header("Authorization", token)
+    fun badInputGenre(){
+        val uri = "genre"
+        val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.post(base + uri)
+                .content("{}")
+                .contentType(APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn()
         val status = mvcResult.response.status
         val content = mvcResult.response.contentAsString
-        Assert.assertEquals(200, status)
+        Assert.assertEquals(422, status)
         Assert.assertNotNull(content)
     }
 
     @Test
-    fun getAllBestSongs(){
-        val uri = "song/best"
-        val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.get(base + uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn()
-        val status = mvcResult.response.status
-        val content = mvcResult.response.contentAsString
-        Assert.assertEquals(200, status)
-        Assert.assertNotNull(content)
+    fun badGenre(){ val uri = "song"
+    val songForm = SongForm()
+    songForm.title = "nice"
+    songForm.date = Date().toString()
+    songForm.description = "New and Fresh"
+    songForm.genre = UUID.randomUUID().toString()
+    songForm.length = "30 minutes"
+    songForm.thumbNail = "http://freshpicture.png"
+    songForm.youtubeLink = "https://youtu.be/UH8g4sjeavU?list=RDW8kI1na3S2M"
+    songForm.musicians = listOf(musician.code.toString())
+
+    val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders
+            .post(base + uri)
+            .content(mapToJson(songForm))
+            .contentType(APPLICATION_JSON_UTF8)
+            .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn()
+    val status = mvcResult.response.status
+    val content = mvcResult.response.contentAsString
+    Assert.assertEquals(500, status)
+    Assert.assertNotNull(content)
     }
 
     @Test
-    fun getSong(){
-       val song = Song()
-        song.genre = genre
-        val savedSong = songService.save(song)
-        val uri = "song/${savedSong.code}"
-        val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.get(base + uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn()
-        val status = mvcResult.response.status
-        val content = mvcResult.response.contentAsString
-        Assert.assertEquals(200, status)
-        Assert.assertNotNull(content)
-    }
-
-    @Test
-    fun createSong(){
-        val uri = "song"
+    fun badMusicians(){ val uri = "song"
         val songForm = SongForm()
         songForm.title = "nice"
         songForm.date = Date().toString()
@@ -117,7 +111,7 @@ class SongTest : BaseTest() {
         songForm.length = "30 minutes"
         songForm.thumbNail = "http://freshpicture.png"
         songForm.youtubeLink = "https://youtu.be/UH8g4sjeavU?list=RDW8kI1na3S2M"
-        songForm.musicians = listOf(musician.code.toString())
+        songForm.musicians = listOf(UUID.randomUUID().toString())
 
         val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders
                 .post(base + uri)
@@ -126,7 +120,9 @@ class SongTest : BaseTest() {
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn()
         val status = mvcResult.response.status
         val content = mvcResult.response.contentAsString
-        Assert.assertEquals(201, status)
+        Assert.assertEquals(500, status)
         Assert.assertNotNull(content)
     }
+
+
 }

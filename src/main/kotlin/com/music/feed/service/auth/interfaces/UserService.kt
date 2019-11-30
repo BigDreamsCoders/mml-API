@@ -2,9 +2,10 @@ package com.music.feed.service.auth.interfaces
 
 import com.music.feed.domain.auth.User
 import com.music.feed.form.UserForm
+import org.springframework.data.repository.CrudRepository
 import java.util.*
 
-interface UserService {
+interface UserService  {
     fun save(user: User)
     fun save(user: UserForm, token : String):User
     fun saveNoCrypt(user:User)

@@ -7,7 +7,7 @@ import com.music.feed.form.SongForm
 import java.util.*
 
 interface SongService {
-    fun save(song : Song)
+    fun save(song : Song) : Song
     fun save(songForm: SongForm, genre: Genre, musicians: Set<Musician>):Song
     fun findAll():List<Song>
     fun findByCode(code : UUID) : Optional<Song>

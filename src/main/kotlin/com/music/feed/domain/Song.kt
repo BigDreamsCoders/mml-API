@@ -1,5 +1,10 @@
 package com.music.feed.domain
 
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonManagedReference
+import com.fasterxml.jackson.annotation.ObjectIdGenerators
 import com.music.feed.form.SongForm
 import org.hibernate.annotations.OnDelete
 import org.hibernate.annotations.OnDeleteAction
@@ -7,15 +12,25 @@ import org.hibernate.annotations.Type
 import java.math.BigDecimal
 import java.util.*
 import javax.persistence.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
+import java.util.stream.Collectors
+import org.apache.tomcat.jni.Lock.name
+import org.apache.tomcat.jni.Lock.name
+
+
+
+
 
 @Entity
 @Table(name="song", schema = "public")
+@JsonIdentityInfo(property = "token", generator = ObjectIdGenerators.UUIDGenerator::class)
 data class Song(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         @Type(type = "pg-uuid")
         @Column(name = "s_code", insertable = false)
-        var code: UUID? = null,
+        var code: UUID ?= null,
 
         @Column(name = "s_description")
         var description : String = "non",
@@ -46,10 +61,11 @@ data class Song(
         @OnDelete(action =  OnDeleteAction.CASCADE)
         var genre : Genre ?= null,
 
-        @ManyToMany(mappedBy = "songs")
-        var musicians : MutableSet<Musician>  =  HashSet())
-{
-        constructor(songForm: SongForm, genre: Genre, musicians: Set<Musician>) : this() {
+        @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
+        @JsonManagedReference
+        var album : MutableList<Album>  =  ArrayList()
+) {
+        constructor(songForm: SongForm, genre: Genre) : this() {
                 length = songForm.length
                 description = songForm.description
                 productionDate = songForm.date
@@ -57,6 +73,6 @@ data class Song(
                 thumbNail = songForm.thumbNail
                 youtubeLink = songForm.youtubeLink
                 this.genre = genre
-                this.musicians.addAll(musicians)
         }
+
 }

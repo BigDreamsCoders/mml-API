@@ -1,5 +1,6 @@
 package com.music.feed.domain
 
+import com.fasterxml.jackson.annotation.*
 import com.music.feed.form.MusicianForm
 import org.hibernate.annotations.OnDelete
 import org.hibernate.annotations.OnDeleteAction
@@ -7,9 +8,13 @@ import org.hibernate.annotations.Type
 import org.hibernate.annotations.TypeDefs
 import java.util.*
 import javax.persistence.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
+
 
 @Entity
 @Table(name="musician", schema = "public")
+@JsonIdentityInfo(property = "token", generator = ObjectIdGenerators.UUIDGenerator::class)
 data class Musician(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,13 +36,9 @@ data class Musician(
         @OnDelete(action =  OnDeleteAction.CASCADE)
         var genre : Genre ?= null,
 
-        @ManyToMany(cascade = [CascadeType.ALL])
-        @JoinTable(
-                name = "musician_song",
-                joinColumns = [ JoinColumn(name = "m_code") ],
-                inverseJoinColumns = [JoinColumn(name = "s_code") ]
-        )
-        var songs : MutableSet<Song>  = HashSet()
+        @OneToMany(mappedBy = "musician", fetch = FetchType.LAZY)
+        @JsonIgnore
+        var album : MutableList<Album>  =  ArrayList()
         ){
         constructor(musicianForm: MusicianForm, genre: Genre) : this(){
                 name = musicianForm.name
