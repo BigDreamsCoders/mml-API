@@ -1,13 +1,10 @@
 package com.music.feed.controller
 
 import com.music.feed.responses.RequestResponse
-import com.music.feed.domain.auth.User
 import com.music.feed.responses.TokenResponse
 import com.music.feed.form.UserForm
-import com.music.feed.responses.ErrorResponse
-import com.music.feed.service.auth.SecurityServiceImpl
-import com.music.feed.service.auth.UserServiceImpl
-import com.music.feed.service.auth.interfaces.UserService
+import com.music.feed.service.auth.SecurityServiceImp
+import com.music.feed.service.auth.UserServiceImp
 import com.music.feed.util.JwtTokenUtil
 import com.music.feed.validator.ErrorValidator
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,8 +13,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.annotation.Secured
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
-import java.util.stream.Collectors
-import javax.servlet.http.HttpServletRequest
 
 import javax.validation.Valid
 
@@ -26,10 +21,10 @@ import javax.validation.Valid
 @RequestMapping("api/v1/user")
 class UserController{
     @Autowired
-    lateinit var userService: UserServiceImpl
+    lateinit var userService: UserServiceImp
 
     @Autowired
-    lateinit var securityService: SecurityServiceImpl
+    lateinit var securityService: SecurityServiceImp
 
     @Autowired
     lateinit var jwtTokenUtil: JwtTokenUtil

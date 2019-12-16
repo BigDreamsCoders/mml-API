@@ -13,8 +13,11 @@ data class Privilege (
     @Column(name = "r_code", insertable = false)
     var code: UUID? = null,
 
-    private val name: String? = null,
+    var name: String = "NON_ROLE",
 
     @ManyToMany(mappedBy = "privileges")
-    private val roles: Collection<Role>? = null
+    var roles: Collection<Role>? = null
 )
+{
+
+}

@@ -12,13 +12,11 @@ data class Role (
     @Column(name = "r_code", insertable = false)
     var code: UUID? = null,
     var name : String = "ROLE_USER",
-    /*@ManyToMany
+    @ManyToMany
     @JoinTable(
-            name = "roles_privileges",
-            joinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "privilege_id", referencedColumnName = "id"))*/
-    var privileges : Collection<Privilege>
+    name = "roles_privileges",
+    joinColumns =  [JoinColumn(name = "role_id", referencedColumnName = "id")],
+    inverseJoinColumns = [JoinColumn(name = "privilege_id", referencedColumnName = "id")])
+    var privileges : Collection<Privilege>? = null
 
 ){}

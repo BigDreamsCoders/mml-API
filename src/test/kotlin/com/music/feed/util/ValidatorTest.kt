@@ -1,7 +1,6 @@
 package com.music.feed.util
 
 import com.music.feed.BaseTest
-import com.music.feed.MmlApplication
 import com.music.feed.domain.Genre
 import com.music.feed.domain.Musician
 import com.music.feed.form.GenreForm
@@ -11,7 +10,7 @@ import com.music.feed.form.UserForm
 import com.music.feed.service.GenreServiceImp
 import com.music.feed.service.MusicianServiceImp
 import com.music.feed.service.SongServiceImp
-import com.music.feed.service.auth.UserServiceImpl
+import com.music.feed.service.auth.UserServiceImp
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -27,7 +26,7 @@ class ValidatorTest : BaseTest(){
     private lateinit var jwtTokenUtil: JwtTokenUtil
 
     @Autowired
-    private lateinit var userService : UserServiceImpl
+    private lateinit var userService : UserServiceImp
 
     @Autowired
     private lateinit var genreService: GenreServiceImp

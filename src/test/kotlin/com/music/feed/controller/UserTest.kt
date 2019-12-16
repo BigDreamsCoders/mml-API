@@ -19,9 +19,6 @@ class UserTest : BaseTest() {
     @Autowired
     private lateinit var userService: UserService
 
-    @Autowired
-    private lateinit var jwtTokenUtil: JwtTokenUtil
-
     private val testUser = UserForm()
 
     @Before

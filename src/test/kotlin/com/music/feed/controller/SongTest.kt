@@ -11,11 +11,7 @@ import com.music.feed.form.UserForm
 import com.music.feed.service.GenreServiceImp
 import com.music.feed.service.MusicianServiceImp
 import com.music.feed.service.SongServiceImp
-import com.music.feed.service.auth.UserServiceImpl
-import com.music.feed.service.auth.interfaces.UserService
-import com.music.feed.service.interfaces.GenreService
-import com.music.feed.service.interfaces.MusicianService
-import com.music.feed.service.interfaces.SongService
+import com.music.feed.service.auth.UserServiceImp
 import com.music.feed.util.JwtTokenUtil
 import org.junit.Assert
 import org.junit.Before
@@ -31,7 +27,7 @@ class SongTest : BaseTest() {
     private lateinit var jwtTokenUtil: JwtTokenUtil
 
     @Autowired
-    private lateinit var userService : UserServiceImpl
+    private lateinit var userService : UserServiceImp
 
     @Autowired
     private lateinit var genreService: GenreServiceImp

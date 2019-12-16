@@ -3,8 +3,7 @@ package com.music.feed.util
 import com.music.feed.BaseTest
 import com.music.feed.domain.auth.User
 import com.music.feed.form.UserForm
-import com.music.feed.service.auth.SecurityServiceImpl
-import com.music.feed.service.auth.interfaces.SecurityService
+import com.music.feed.service.auth.SecurityServiceImp
 import com.music.feed.service.auth.interfaces.UserService
 import io.jsonwebtoken.Claims
 import org.junit.Assert
@@ -16,14 +15,8 @@ import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import java.util.function.Function
 import org.springframework.mock.web.MockFilterChain
-import javax.servlet.FilterChain
 import org.springframework.mock.web.MockHttpServletResponse
-import org.springframework.http.HttpHeaders
 import org.springframework.mock.web.MockHttpServletRequest
-import org.springframework.security.core.context.SecurityContextHolder
-import java.lang.Exception
-import javax.servlet.http.HttpServletResponse
-import javax.servlet.http.HttpServletRequest
 import org.mockito.InjectMocks
 
 
@@ -39,7 +32,7 @@ class TokenTest : BaseTest() {
     private lateinit var userService: UserService
 
     @Autowired
-    lateinit var  securityService : SecurityServiceImpl
+    lateinit var  securityService : SecurityServiceImp
 
     private var username = "00062815@uca.edu.sv"
     private val PREFIX = "Bearer "

@@ -9,7 +9,7 @@ import com.music.feed.service.GenreServiceImp
 import com.music.feed.service.MusicianServiceImp
 import com.music.feed.service.RatingServiceImp
 import com.music.feed.service.SongServiceImp
-import com.music.feed.service.auth.UserServiceImpl
+import com.music.feed.service.auth.UserServiceImp
 import com.music.feed.util.JwtTokenUtil
 import com.music.feed.validator.ErrorValidator
 import org.springframework.beans.factory.annotation.Autowired
@@ -44,7 +44,7 @@ class SongController {
     lateinit var jwtTokenUtil: JwtTokenUtil
 
     @Autowired
-    lateinit var userService: UserServiceImpl
+    lateinit var userService: UserServiceImp
 
     @GetMapping(value=["/all"])
     @ResponseBody

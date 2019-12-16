@@ -66,7 +66,17 @@ data class User (
         var gender  : String = "not-specified",
 
         @Column(name = "u_last_updated")
-        var lastUpdated : String = Date().toString()
+        var lastUpdated : String = Date().toString(),
+
+        @ManyToMany
+        @JoinTable(
+        name = "users_roles",
+        joinColumns = [JoinColumn(
+                name = "user_id", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(
+                name = "role_id", referencedColumnName = "id")])
+        var roles : Collection<Role>?=null
+
 
 ){
 }

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.HashSet
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 
 @Primary
 @Service
-class UserDetailsServiceImpl : UserDetailsService{
+class UserDetailsServiceImp : UserDetailsService{
 
     @Autowired
     lateinit var userRepositoryImpl: UserRepository

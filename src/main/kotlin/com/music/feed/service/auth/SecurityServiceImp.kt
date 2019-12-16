@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class SecurityServiceImpl : SecurityService {
+class SecurityServiceImp : SecurityService {
     @Autowired
     lateinit var authenticationManager: AuthenticationManager
 
@@ -43,6 +43,6 @@ class SecurityServiceImpl : SecurityService {
 
 
     companion object {
-        private val logger = LoggerFactory.getLogger(SecurityServiceImpl::class.java)
+        private val logger = LoggerFactory.getLogger(SecurityServiceImp::class.java)
     }
 }
