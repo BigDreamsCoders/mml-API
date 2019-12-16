@@ -24,9 +24,7 @@ class SecurityServiceImpl : SecurityService {
         val auth = SecurityContextHolder.getContext().authentication
         val username =  auth.name
         val details  = auth.details
-        if (details is WebAuthenticationDetails) {
-            return  username
-        }
+        return if (details is WebAuthenticationDetails) username
         else return "not-found"
     }
 
