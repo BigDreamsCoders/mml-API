@@ -48,7 +48,7 @@ class InitialDataLoader : ApplicationListener<ContextRefreshedEvent> {
     @Transactional
     fun createPrivilegeIfNotFound(name : String) : Privilege{
         val privilege  = privilegeService.findByName(name)
-        if (privilege.isEmpty) {
+        if (privilege.isPresent) {
             return privilegeService.save(name)
         }
         return privilege.get()
@@ -57,7 +57,7 @@ class InitialDataLoader : ApplicationListener<ContextRefreshedEvent> {
     @Transactional
     fun createRoleIfNotFound( name: String, privileges: Collection<Privilege>): Role {
         val role  = roleService.findByName(name)
-        if (role.isEmpty) {
+        if (role.isPresent) {
             return roleService.save(name, privileges)
         }
         return role.get()
