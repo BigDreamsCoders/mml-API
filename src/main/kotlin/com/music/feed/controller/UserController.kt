@@ -3,6 +3,7 @@ package com.music.feed.controller
 import com.music.feed.responses.RequestResponse
 import com.music.feed.responses.TokenResponse
 import com.music.feed.form.UserForm
+import com.music.feed.service.auth.RoleServiceImp
 import com.music.feed.service.auth.SecurityServiceImp
 import com.music.feed.service.auth.UserServiceImp
 import com.music.feed.util.JwtTokenUtil
@@ -25,6 +26,9 @@ class UserController{
 
     @Autowired
     lateinit var securityService: SecurityServiceImp
+
+    @Autowired
+    lateinit var roleServiceImp: RoleServiceImp
 
     @Autowired
     lateinit var jwtTokenUtil: JwtTokenUtil
@@ -64,7 +68,6 @@ class UserController{
         }
 
         val token = jwtTokenUtil.getJWTToken(userForm.email)
-
 
         userService.save(userForm, token)
         securityService.autoLogin(userForm.email, userForm.password)

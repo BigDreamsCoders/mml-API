@@ -70,11 +70,11 @@ data class User (
 
         @ManyToMany
         @JoinTable(
-        name = "users_roles",
+        name = "user_role",
         joinColumns = [JoinColumn(
-                name = "user_id", referencedColumnName = "id")],
+                name = "user_id", referencedColumnName = "u_code")],
         inverseJoinColumns = [JoinColumn(
-                name = "role_id", referencedColumnName = "id")])
+                name = "role_id", referencedColumnName = "ro_code")])
         var roles : Collection<Role>?=null
 
 

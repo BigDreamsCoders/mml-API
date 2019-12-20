@@ -31,11 +31,12 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http
-                .cors().and()
+                .cors()
+                .and()
                 .addFilterAfter(JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/v1/user/login",
-                        "/api/v1/user/registration").permitAll()
+                        "/api/v1/user/registration").hasRole("ADMIN_ROLE")
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
