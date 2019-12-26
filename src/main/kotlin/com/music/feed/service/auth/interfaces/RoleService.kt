@@ -6,5 +6,5 @@ import java.util.*
 
 interface RoleService {
     fun findByName(name : String) : Optional<Role>
-    fun save(name : String, privileges: Collection<Privilege> ) : Role
+    fun save(name : String, privileges: List<Privilege> ) : Role
 }

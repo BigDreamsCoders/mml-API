@@ -36,7 +36,9 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .addFilterAfter(JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/v1/user/login",
-                        "/api/v1/user/registration").hasRole("ADMIN_ROLE")
+                        "/api/v1/user/registration").permitAll()
+                .antMatchers("/api/v1/**").hasAuthority("READ_PRIVILEGE")
+                .antMatchers("/api/admin/**").hasAnyAuthority("WRITE_PRIVILEGE")
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()

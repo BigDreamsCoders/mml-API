@@ -21,10 +21,10 @@ import java.util.*
 class UserDetailsServiceImp : UserDetailsService{
 
     @Autowired
-    lateinit var userRepositoryImp: UserRepository
+    private lateinit var userRepositoryImp: UserRepository
 
     @Autowired
-    lateinit var roleRepositoryImp: RoleRepository
+    private lateinit var roleRepositoryImp: RoleRepository
 
 
     @Transactional(readOnly = true)

@@ -15,7 +15,7 @@ import kotlin.collections.ArrayList
 @Service
 class GenreServiceImp : GenreService{
     @Autowired
-    lateinit var genreRepository: GenreRepository
+    private lateinit var genreRepository: GenreRepository
 
 
     override fun save(genre : Genre) : Genre{

@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service
 @Service
 class SecurityServiceImp : SecurityService {
     @Autowired
-    lateinit var authenticationManager: AuthenticationManager
+    private lateinit var authenticationManager: AuthenticationManager
 
     @Autowired
-    lateinit var userDetailsService : UserDetailsService
+    private lateinit var userDetailsService : UserDetailsService
 
     override fun findLoggedInUsername(): String {
         val auth = SecurityContextHolder.getContext().authentication

@@ -1,5 +1,7 @@
 package com.music.feed.domain.auth
 
+import com.fasterxml.jackson.annotation.JsonBackReference
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.annotations.Type
 import java.util.*
 import javax.persistence.*
@@ -14,11 +16,12 @@ data class Privilege (
     @Column(name = "p_code", insertable = false)
     var code: UUID? = null,
 
-    @Column(name = "p_name", insertable = false)
+    @Column(name = "p_name")
     var name: String = "NON_ROLE",
 
     @ManyToMany(mappedBy = "privileges")
-    var roles: Collection<Role>? = null
+    @JsonBackReference
+    var roles: List<Role>? = null
 )
 {
 

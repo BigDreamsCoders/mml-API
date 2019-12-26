@@ -10,7 +10,7 @@ import java.util.*
 @Service
 class PrivilegeServiceImp : PrivilegeService {
     @Autowired
-    lateinit var privilegeRepository: PrivilegeRepository
+    private lateinit var privilegeRepository: PrivilegeRepository
     override fun findByName(name: String): Optional<Privilege> {
         return privilegeRepository.findByName(name)
     }

@@ -1,5 +1,6 @@
 package com.music.feed.domain.auth
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import com.vladmihalcea.hibernate.type.array.IntArrayType
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType
 import org.hibernate.annotations.Type
@@ -57,10 +58,10 @@ data class User (
         var phone : JsonBinaryType ?= null,
 
         @Column(name = "u_names")
-        var names : String  = "",
+        var names : String  = "default-name",
 
         @Column (name = "u_surname")
-        var lastNames : String = "",
+        var lastNames : String = "default-surname",
 
         @Column(name = "u_gender")
         var gender  : String = "not-specified",
@@ -75,7 +76,8 @@ data class User (
                 name = "user_id", referencedColumnName = "u_code")],
         inverseJoinColumns = [JoinColumn(
                 name = "role_id", referencedColumnName = "ro_code")])
-        var roles : Collection<Role>?=null
+        @JsonManagedReference
+        var roles : List<Role>?=null
 
 
 ){

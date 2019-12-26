@@ -15,10 +15,10 @@ import java.util.*
 @Service
 class SongServiceImp : SongService{
     @Autowired
-    lateinit var songRepository: SongRepository
+    private lateinit var songRepository: SongRepository
 
     @Autowired
-    lateinit var albumRepository: AlbumRepository
+    private lateinit var albumRepository: AlbumRepository
 
     override fun findByCode(code: UUID): Optional<Song> {
         return songRepository.findByCode(code)

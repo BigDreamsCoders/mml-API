@@ -17,7 +17,7 @@ import kotlin.collections.HashMap
 @Service
 class MusicianServiceImp : MusicianService {
     @Autowired
-    lateinit var musicianRepository: MusicianRepository
+    private lateinit var musicianRepository: MusicianRepository
 
     override fun findByCode(code: UUID): Optional<Musician> {
         return musicianRepository.findByCode(code)

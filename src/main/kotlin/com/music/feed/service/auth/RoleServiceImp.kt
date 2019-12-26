@@ -11,13 +11,13 @@ import java.util.*
 @Service
 class RoleServiceImp : RoleService{
     @Autowired
-    lateinit var roleRepository: RoleRepository
+    private lateinit var roleRepository: RoleRepository
 
     override fun findByName(name: String): Optional<Role> {
         return roleRepository.findByName(name)
     }
 
-    override fun save(name: String, privileges: Collection<Privilege>): Role {
+    override fun save(name: String, privileges: List<Privilege>): Role {
         val role = Role(name = name, privileges = privileges)
         return roleRepository.save(role)
     }

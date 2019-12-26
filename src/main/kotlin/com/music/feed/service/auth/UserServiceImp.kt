@@ -14,13 +14,13 @@ import java.util.*
 class UserServiceImp : UserService{
 
     @Autowired
-    lateinit var userRepository: UserRepository
+    private lateinit var userRepository: UserRepository
 
     @Autowired
-    lateinit var roleService: RoleServiceImp
+    private lateinit var roleService: RoleServiceImp
 
     @Autowired
-    lateinit var bCryptPasswordEncoder: BCryptPasswordEncoder
+    private lateinit var bCryptPasswordEncoder: BCryptPasswordEncoder
 
 
     override fun save(user: User) {
@@ -30,7 +30,7 @@ class UserServiceImp : UserService{
 
     override fun save(user : UserForm, token : String):User{
         val role  = roleService.findByName("ROLE_USER")
-        val newUser = User(roles = listOf(role.get()))
+        val newUser = User(roles = mutableListOf(role.get()))
 
         newUser.email = user.email
         newUser.password = user.password

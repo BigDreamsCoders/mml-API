@@ -15,7 +15,7 @@ import java.util.*
 @Service
 class RatingServiceImp : RatingService {
     @Autowired
-    lateinit var ratingRepository: RatingRepository
+    private lateinit var ratingRepository: RatingRepository
 
     override fun save(user: User, song: Song, rateForm : RateForm) {
         val newRating = Rating(user, song, rateForm)

@@ -41,7 +41,12 @@ class InitialDataLoader : ApplicationListener<ContextRefreshedEvent> {
 
         val adminUser = User(names = "admin_test", username = "admintest", password = "admintest",
                 email = "admintest@gmail.com", roles = listOf(adminDataRole))
-        userService.save(adminUser)
+
+        val found = userService.findByEmail("admintest@gmail.com")
+
+        if(found.isEmpty){
+            userService.save(adminUser)
+        }
 
     }
 
@@ -55,7 +60,7 @@ class InitialDataLoader : ApplicationListener<ContextRefreshedEvent> {
     }
 
     @Transactional
-    fun createRoleIfNotFound( name: String, privileges: Collection<Privilege>): Role {
+    fun createRoleIfNotFound( name: String, privileges: List<Privilege>): Role {
         val role  = roleService.findByName(name)
         if (role.isEmpty) {
             return roleService.save(name, privileges)
