@@ -90,38 +90,5 @@ class UserController{
         return ResponseEntity(RequestResponse("No such user registered by that email", 500),
         HttpStatus.OK)
     }
-
-    /*
-   @GetMapping(value =["/login/{token}"])
-   @ResponseBody
-   fun loginToken(@PathVariable("token") token:String): ResponseEntity<Any>{
-       val user = userService.findByLoginToken(token)
-       if(!user.isPresent){
-           return ResponseEntity("Non valid token", HttpStatus.INTERNAL_SERVER_ERROR)
-       }
-       securityService.autoLogin(user.get().email, user.get().password)
-       return ResponseEntity(RequestResponse("Session started", 200), HttpStatus.OK)
-   }
-
-
-   @PostMapping(value = ["/token"])
-   @ResponseBody
-   fun requestToken(@RequestBody userForm :UserForm , bindingResult: BindingResult): ResponseEntity<Any>{
-       if (bindingResult.hasErrors()) {
-           return ResponseEntity(bindingResult.allErrors, HttpStatus.INTERNAL_SERVER_ERROR)
-       }
-       val findUser = userService.findByEmail(userForm.email)
-       if(findUser.isPresent){
-           findUser.get().loginToken = UUID.randomUUID().toString()
-       }
-       else{
-           return ResponseEntity(RequestResponse("User not found", 500), HttpStatus.OK)
-       }
-
-       userService.save(findUser.get())
-       securityService.autoLogin(userForm.email, userForm.password)
-
-       return ResponseEntity(TokenResponse("Here is your token", 200,
-               findUser.get().loginToken.toString()), HttpStatus.CREATED)
-   }*/
+    
 }
