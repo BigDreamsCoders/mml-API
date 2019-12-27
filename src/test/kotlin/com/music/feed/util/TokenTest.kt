@@ -75,8 +75,9 @@ class TokenTest : BaseTest() {
     @Test
     fun checkToken(){
         val uri = "user/token"
+
+        userService.save(testUser)
         val token = jwtTokenUtil.getJWTToken(testUser.email)
-        userService.save(testUser, token)
 
         val mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.get(base + uri)
                 .header("Authorization", "Bearer $token")

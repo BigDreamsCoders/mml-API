@@ -59,13 +59,15 @@ class RatingTest : BaseTest() {
         val userForm = UserForm()
         userForm.email = "test@test.com"
         userForm.password = "test"
+
+        userService.save(userForm)
         token = jwtTokenUtil.getJWTToken(userForm.email)
-        userService.save(userForm, token)
 
         userForm.email = "test2@test.com"
         userForm.password = "test"
+
+        userService.save(userForm)
         token2 = jwtTokenUtil.getJWTToken(userForm.email)
-        userService.save(userForm, token)
     }
 
     @Test

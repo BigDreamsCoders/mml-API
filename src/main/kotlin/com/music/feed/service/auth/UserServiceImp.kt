@@ -28,7 +28,7 @@ class UserServiceImp : UserService{
         userRepository.save(user)
     }
 
-    override fun save(user : UserForm, token : String):User{
+    override fun save(user : UserForm):User{
         val role  = roleService.findByName("ROLE_USER")
         val newUser = User(roles = mutableListOf(role.get()))
 

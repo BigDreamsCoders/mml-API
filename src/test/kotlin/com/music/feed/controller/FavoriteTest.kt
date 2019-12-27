@@ -67,16 +67,16 @@ class FavoriteTest : BaseTest() {
         val userForm = UserForm()
         userForm.email = "test@test.com"
         userForm.password = "test"
+        user = userService.save(userForm)
         token = jwtTokenUtil.getJWTToken(userForm.email)
-        user = userService.save(userForm, token)
     }
 
     @Test
     fun addFavorite(){
         var uri = "rating/song/like"
-        var favoriteForm = LikeForm()
-        favoriteForm.code = song.code.toString();
-        favoriteForm.status = 0;
+        val favoriteForm = LikeForm()
+        favoriteForm.code = song.code.toString()
+        favoriteForm.status = 0
         var favoriteJson = mapToJson(favoriteForm)
 
         var mvcResult: MvcResult = mockMvc.perform(MockMvcRequestBuilders.post(base + uri)
@@ -85,7 +85,7 @@ class FavoriteTest : BaseTest() {
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(favoriteJson)).andReturn()
         var status = mvcResult.response.status
         var content = mvcResult.response.contentAsString
-        var rating = ratingService.findByUserAndSong(user, song);
+        var rating = ratingService.findByUserAndSong(user, song)
 
         Assert.assertNotNull(rating)
         Assert.assertEquals(rating.get().likedStatus, 0)
@@ -93,8 +93,8 @@ class FavoriteTest : BaseTest() {
         Assert.assertNotNull(content)
 
         uri = "rating/song/like"
-        favoriteForm.code = song.code.toString();
-        favoriteForm.status = 1;
+        favoriteForm.code = song.code.toString()
+        favoriteForm.status = 1
         favoriteJson = mapToJson(favoriteForm)
         mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(base + uri)
                 .header("Authorization", "Bearer "+token)
@@ -102,7 +102,7 @@ class FavoriteTest : BaseTest() {
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(favoriteJson)).andReturn()
         status = mvcResult.response.status
         content = mvcResult.response.contentAsString
-        rating = ratingService.findByUserAndSong(user, song);
+        rating = ratingService.findByUserAndSong(user, song)
 
         Assert.assertEquals(200, status)
         Assert.assertNotNull(rating)
@@ -122,12 +122,12 @@ class FavoriteTest : BaseTest() {
 
     @Test
     fun getFavorites(){
-        var uri = "rating/favorites"
-        var mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(base + uri)
+        val uri = "rating/favorites"
+        val mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(base + uri)
                 .header("Authorization", "Bearer "+token)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn()
-        var status = mvcResult.response.status
-        var content = mvcResult.response.contentAsString
+        val status = mvcResult.response.status
+        val content = mvcResult.response.contentAsString
 
         Assert.assertEquals(200, status)
         Assert.assertNotNull(content)

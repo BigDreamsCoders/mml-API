@@ -63,9 +63,9 @@ class UserController{
                     HttpStatus.UNAUTHORIZED)
         }
 
+        userService.save(userForm)
         val token = jwtTokenUtil.getJWTToken(userForm.email)
 
-        userService.save(userForm, token)
         securityService.autoLogin(userForm.email, userForm.password)
 
         return ResponseEntity(TokenResponse ("User created", 201, token ),

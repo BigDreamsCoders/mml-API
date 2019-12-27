@@ -7,7 +7,7 @@ import java.util.*
 
 interface UserService  {
     fun save(user: User)
-    fun save(user: UserForm, token : String):User
+    fun save(user: UserForm):User
     fun saveNoCrypt(user:User)
     fun findByUsername(username: String): Optional<User>
     fun findByUsernameOrEmail (username: String, email : String) : Optional<User>

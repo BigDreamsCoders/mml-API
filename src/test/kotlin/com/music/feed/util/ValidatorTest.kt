@@ -60,8 +60,9 @@ class ValidatorTest : BaseTest(){
         val userForm = UserForm()
         userForm.email = "test@test.com"
         userForm.password = "test"
+
+        userService.save(userForm)
         token = jwtTokenUtil.getJWTToken(userForm.email)
-        userService.save(userForm, token)
     }
 
     @Test

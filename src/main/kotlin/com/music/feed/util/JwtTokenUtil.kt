@@ -61,9 +61,8 @@ class JwtTokenUtil : Serializable {
         val grantedAuthority = userService.findByEmail(username)
 
         if(grantedAuthority.isPresent){
-            grantedAuthority.get().roles?.forEach {
-                role ->
-                role.privileges?.forEach {
+            grantedAuthority.get().roles.forEach { role ->
+                role.privileges.forEach {
                     foundAuthorities.add(it.name)
                 }
             }
