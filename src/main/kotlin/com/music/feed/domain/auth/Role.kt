@@ -1,10 +1,12 @@
 package com.music.feed.domain.auth
 
 import com.fasterxml.jackson.annotation.JsonBackReference
-import com.fasterxml.jackson.annotation.JsonManagedReference
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.annotations.Type
 import java.util.*
+import java.util.stream.Collectors
 import javax.persistence.*
+import kotlin.collections.ArrayList
 
 @Entity
 @Table(name="role", schema = "public")
@@ -18,8 +20,8 @@ data class Role (
     @Column(name = "ro_name")
     var name : String = "ROLE_USER",
 
-    @ManyToMany(mappedBy = "roles")
-    @JsonBackReference
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST])
+    @JsonIgnore
     var users : List<User>? = null ,
 
     @ManyToMany
@@ -27,7 +29,15 @@ data class Role (
     name = "role_privilege",
     joinColumns =  [JoinColumn(name = "role_id", referencedColumnName = "ro_code")],
     inverseJoinColumns = [JoinColumn(name = "privilege_id", referencedColumnName = "p_code")])
-    @JsonManagedReference
-    var privileges : List<Privilege>? = null
+    @JsonBackReference
+    var privileges : Collection<Privilege> = ArrayList()
 
-){}
+){
+    override fun toString(): String {
+        return "Role{" +
+                "code=${code},"+
+                "name=${name},"+
+                "privileges="+privileges.stream().map(Privilege::name).collect(Collectors.toList())+
+                "}"
+    }
+}

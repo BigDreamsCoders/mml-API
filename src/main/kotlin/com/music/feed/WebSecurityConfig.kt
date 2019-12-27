@@ -38,7 +38,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .antMatchers(HttpMethod.POST, "/api/v1/user/login",
                         "/api/v1/user/registration").permitAll()
                 .antMatchers("/api/v1/**").hasAuthority("READ_PRIVILEGE")
-                .antMatchers("/api/admin/**").hasAnyAuthority("WRITE_PRIVILEGE")
+                .antMatchers("/api/v1/admin/**").hasAnyAuthority("WRITE_PRIVILEGE")
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()

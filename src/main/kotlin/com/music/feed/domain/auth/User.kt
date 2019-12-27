@@ -9,6 +9,7 @@ import org.hibernate.annotations.TypeDefs
 import java.io.Serializable
 import java.util.*
 import javax.persistence.*
+import kotlin.collections.ArrayList
 
 @Entity
 @Table(name="user", schema = "public")
@@ -32,22 +33,16 @@ data class User (
         @Column(name = "u_password")
         var password: String = "",
 
-        @Column(name = "u_account_type")
-        var accountType: Int = 1,
-
         @Column(name = "u_token_verification")
         var verifyToken: String = "",
 
         @Column(name = "u_token_reset")
         var resetToken: String = "",
 
-        @Column(name = "u_login_token")
-        var loginToken : String = "",
-
         @Column(name = "u_active")
         var active: Boolean = true,
 
-        @Column(name = "u_date_created", insertable = false)
+        @Column(name = "u_date_created")
         var dateCreated: String = Date().toString(),
 
         @Column(name = "u_profile_photo")
@@ -77,7 +72,7 @@ data class User (
         inverseJoinColumns = [JoinColumn(
                 name = "role_id", referencedColumnName = "ro_code")])
         @JsonManagedReference
-        var roles : List<Role>?=null
+        var roles : Collection<Role> = ArrayList()
 
 
 ){

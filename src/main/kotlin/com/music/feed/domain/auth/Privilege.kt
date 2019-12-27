@@ -19,10 +19,15 @@ data class Privilege (
     @Column(name = "p_name")
     var name: String = "NON_ROLE",
 
-    @ManyToMany(mappedBy = "privileges")
-    @JsonBackReference
-    var roles: List<Role>? = null
+    @ManyToMany(mappedBy = "privileges", fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST])
+    @JsonIgnore
+    var roles: Collection<Role> = ArrayList()
 )
 {
-
+    override fun toString(): String {
+        return "Privilege{" +
+                "code=${code},"+
+                "name=${name}"+
+                "}"
+    }
 }

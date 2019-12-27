@@ -28,9 +28,6 @@ class UserController{
     lateinit var securityService: SecurityServiceImp
 
     @Autowired
-    lateinit var roleServiceImp: RoleServiceImp
-
-    @Autowired
     lateinit var jwtTokenUtil: JwtTokenUtil
 
     @Autowired
@@ -46,8 +43,7 @@ class UserController{
         val user = userService.validateUser(userForm.email, userForm.password)
         if(user.isPresent){
             val token = jwtTokenUtil.getJWTToken(userForm.email)
-            user.get().loginToken = token.replace("Bearer ", "")
-            userService.saveNoCrypt(user.get())
+            //user.get().loginToken = token.replace("Bearer ", "")
             val result = TokenResponse ("Session started", 200, token )
             return ResponseEntity(result, HttpStatus.OK)
         }
@@ -94,9 +90,6 @@ class UserController{
         return ResponseEntity(RequestResponse("No such user registered by that email", 500),
         HttpStatus.OK)
     }
-
-
-
 
     /*
    @GetMapping(value =["/login/{token}"])

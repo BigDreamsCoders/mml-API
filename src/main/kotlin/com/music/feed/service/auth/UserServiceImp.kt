@@ -34,7 +34,6 @@ class UserServiceImp : UserService{
 
         newUser.email = user.email
         newUser.password = user.password
-        newUser.loginToken =  token.replace("Bearer ", "")
 
         newUser.password=bCryptPasswordEncoder.encode(newUser.password)
         return userRepository.save(newUser)
@@ -54,14 +53,6 @@ class UserServiceImp : UserService{
 
     override fun findByEmail(email: String): Optional<User> {
         return userRepository.findByEmail(email)
-    }
-
-    override fun findByLoginToken(token : String) : Optional<User>{
-        return userRepository.findByLoginToken(token)
-    }
-
-    fun findAllFavoritiesByEmail(){
-
     }
 
     fun validateUser(email: String, password : String) : Optional<User>{
