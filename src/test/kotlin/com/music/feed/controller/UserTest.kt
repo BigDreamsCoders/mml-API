@@ -11,7 +11,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import java.lang.Exception
 import org.springframework.beans.factory.annotation.Autowired
 import com.music.feed.service.auth.interfaces.UserService
-import com.music.feed.util.JwtTokenUtil
 import org.junit.Before
 
 class UserTest : BaseTest() {

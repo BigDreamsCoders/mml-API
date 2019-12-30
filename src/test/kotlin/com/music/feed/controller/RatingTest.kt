@@ -9,7 +9,7 @@ import com.music.feed.service.auth.interfaces.UserService
 import com.music.feed.service.interfaces.GenreService
 import com.music.feed.service.interfaces.MusicianService
 import com.music.feed.service.interfaces.SongService
-import com.music.feed.util.JwtTokenUtil
+import com.music.feed.util.token.JwtTokenUtil
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test

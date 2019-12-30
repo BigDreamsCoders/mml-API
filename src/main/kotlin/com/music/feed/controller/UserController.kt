@@ -3,10 +3,9 @@ package com.music.feed.controller
 import com.music.feed.responses.RequestResponse
 import com.music.feed.responses.TokenResponse
 import com.music.feed.form.UserForm
-import com.music.feed.service.auth.RoleServiceImp
 import com.music.feed.service.auth.SecurityServiceImp
 import com.music.feed.service.auth.UserServiceImp
-import com.music.feed.util.JwtTokenUtil
+import com.music.feed.util.token.JwtTokenUtil
 import com.music.feed.validator.ErrorValidator
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -90,5 +89,5 @@ class UserController{
         return ResponseEntity(RequestResponse("No such user registered by that email", 500),
         HttpStatus.OK)
     }
-    
+
 }

@@ -1,13 +1,10 @@
 package com.music.feed.form
 
-import com.music.feed.annotation.NotBlankElements
-import com.music.feed.annotation.NotNullElements
+import com.music.feed.validator.annotation.NotBlankElements
+import com.music.feed.validator.annotation.NotNullElements
 import java.io.Serializable
 import java.util.ArrayList
-import javax.validation.Valid
-import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotEmpty
-import javax.validation.constraints.NotNull
 
 data class GenreForm (
         @field:NotEmpty(message = "Ingrese un nombre de genero")

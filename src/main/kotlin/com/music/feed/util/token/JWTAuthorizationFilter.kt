@@ -1,4 +1,4 @@
-package com.music.feed.util
+package com.music.feed.util.token
 
 import java.io.IOException
 import java.util.stream.Collectors
@@ -80,6 +80,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
     }
 
     private fun existingJWTToken(request: HttpServletRequest, res: HttpServletResponse): Boolean {
+        res.status
         val authenticationHeader = request.getHeader(HEADER)
         return !(authenticationHeader == null || !authenticationHeader.startsWith(PREFIX))
     }

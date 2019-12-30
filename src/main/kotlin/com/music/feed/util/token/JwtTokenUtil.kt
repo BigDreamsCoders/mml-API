@@ -1,4 +1,4 @@
-package com.music.feed.util
+package com.music.feed.util.token
 
 import com.music.feed.service.auth.RoleServiceImp
 import com.music.feed.service.auth.UserServiceImp
@@ -12,7 +12,6 @@ import java.util.function.Function
 import java.util.stream.Collectors
 import java.util.Calendar
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.core.GrantedAuthority
 import javax.servlet.http.HttpServletRequest
 import kotlin.collections.ArrayList
 

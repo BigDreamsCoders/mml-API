@@ -1,6 +1,6 @@
-package com.music.feed
+package com.music.feed.config
 
-import com.music.feed.util.JWTAuthorizationFilter
+import com.music.feed.util.token.JWTAuthorizationFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

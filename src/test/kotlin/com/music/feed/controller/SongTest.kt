@@ -12,7 +12,7 @@ import com.music.feed.service.GenreServiceImp
 import com.music.feed.service.MusicianServiceImp
 import com.music.feed.service.SongServiceImp
 import com.music.feed.service.auth.UserServiceImp
-import com.music.feed.util.JwtTokenUtil
+import com.music.feed.util.token.JwtTokenUtil
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test

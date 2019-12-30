@@ -1,7 +1,7 @@
 package com.music.feed.form
 
-import com.music.feed.annotation.NotBlankElements
-import com.music.feed.annotation.NotNullElements
+import com.music.feed.validator.annotation.NotBlankElements
+import com.music.feed.validator.annotation.NotNullElements
 import java.util.*
 import javax.validation.constraints.NotEmpty
 

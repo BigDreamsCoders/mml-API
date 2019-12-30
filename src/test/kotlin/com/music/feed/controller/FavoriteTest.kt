@@ -11,7 +11,7 @@ import com.music.feed.service.interfaces.GenreService
 import com.music.feed.service.interfaces.MusicianService
 import com.music.feed.service.interfaces.RatingService
 import com.music.feed.service.interfaces.SongService
-import com.music.feed.util.JwtTokenUtil
+import com.music.feed.util.token.JwtTokenUtil
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import java.util.*
 
 class FavoriteTest : BaseTest() {
 

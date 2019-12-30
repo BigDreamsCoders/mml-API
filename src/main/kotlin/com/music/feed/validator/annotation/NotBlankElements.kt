@@ -1,4 +1,4 @@
-package com.music.feed.annotation
+package com.music.feed.validator.annotation
 
 import com.music.feed.validator.NotBlankElementsValidator
 import javax.validation.Constraint

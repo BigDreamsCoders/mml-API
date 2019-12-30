@@ -1,4 +1,4 @@
-package com.music.feed
+package com.music.feed.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

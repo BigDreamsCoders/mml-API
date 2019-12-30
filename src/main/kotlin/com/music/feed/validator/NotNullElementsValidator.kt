@@ -1,6 +1,6 @@
 package com.music.feed.validator
 
-import com.music.feed.annotation.NotNullElements
+import com.music.feed.validator.annotation.NotNullElements
 import javax.validation.ConstraintValidator
 import javax.validation.ConstraintValidatorContext
 

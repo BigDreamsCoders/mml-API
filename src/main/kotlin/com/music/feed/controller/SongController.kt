@@ -10,7 +10,7 @@ import com.music.feed.service.MusicianServiceImp
 import com.music.feed.service.RatingServiceImp
 import com.music.feed.service.SongServiceImp
 import com.music.feed.service.auth.UserServiceImp
-import com.music.feed.util.JwtTokenUtil
+import com.music.feed.util.token.JwtTokenUtil
 import com.music.feed.validator.ErrorValidator
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus

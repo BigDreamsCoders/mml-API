@@ -5,6 +5,8 @@ import com.music.feed.domain.auth.User
 import com.music.feed.form.UserForm
 import com.music.feed.service.auth.SecurityServiceImp
 import com.music.feed.service.auth.interfaces.UserService
+import com.music.feed.util.token.JWTAuthorizationFilter
+import com.music.feed.util.token.JwtTokenUtil
 import io.jsonwebtoken.Claims
 import org.junit.Assert
 import org.junit.Before
